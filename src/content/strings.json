@@ -1,0 +1,324 @@
+{
+  "hero": {
+    "title": "Kanduras Medya ile Dijital Potansiyelinizi Keşfedin",
+    "subtitle": "Yapay zeka destekli stratejilerle markanızı zirveye taşıyoruz.",
+    "cta_offer": "Ücretsiz Teklif Al",
+    "cta_services": "Hizmetlerimiz",
+    "cards": [
+      {
+        "title": "Yapay Zeka & SEO",
+        "desc": "YZ tabanlı optimizasyon yöntemleriyle arama motorlarında öne çıkın."
+      },
+      {
+        "title": "Dijital Reklamcılık",
+        "desc": "Hedef kitlenize ulaşan yenilikçi reklam kampanyalarıyla fark yaratın."
+      },
+      {
+        "title": "Sosyal Medya Yönetimi",
+        "desc": "Marka bilinirliğinizi artıran etkili sosyal medya stratejileriyle öne çıkın."
+      }
+    ]
+  },
+  "services": {
+    "title": "Hizmetlerimiz",
+    "subtitle": "İşletmenize değer katacak, pazarlama süreçlerinizi güçlendirecek çözümler sunuyoruz.",
+    "list": [
+      {
+        "title": "Sosyal Medya Yönetimi",
+        "description": "Markanız için özgün sosyal medya planları geliştiriyor, içerik üretimi ve topluluk etkileşimi sağlıyoruz."
+      },
+      {
+        "title": "SEO Optimizasyonu",
+        "description": "Web sitenizi arama motorlarında üst sıralara taşıyacak, ziyaretçi ve dönüşüm odaklı iyileştirmeler yapıyoruz."
+      },
+      {
+        "title": "İçerik Üreticileri İçin",
+        "description": "Yapay zeka destekli iş akışlarıyla içerik üretimi ve yönetimini kolaylaştırıyoruz. Analiz ve raporlama için gelişmiş olanaklar sunuyoruz."
+      },
+      {
+        "title": "Google Ads Yönetimi",
+        "description": "Etkili reklam stratejileriyle potansiyel müşterilerinize ulaşın, yatırım getirinizi artırın."
+      },
+      {
+        "title": "Web Tasarım & Geliştirme",
+        "description": "Modern, kullanıcı dostu ve mobil uyumlu web siteleriyle dijital varlığınızı güçlendiriyoruz."
+      },
+      {
+        "title": "E-posta Pazarlaması",
+        "description": "Kişiselleştirilmiş e-posta kampanyalarıyla müşterilerinizle iletişimi güçlendiriyor, satışlarınızı yükseltiyoruz."
+      },
+      {
+        "title": "Uygulama Geliştirme",
+        "description": "Mobil ve web uygulamalarıyla dijital çözümler sunuyor, kullanıcı deneyimini ön planda tutarak yenilikçi projeler geliştiriyoruz."
+      }
+    ],
+    "cta": "Tüm Hizmetlerimizi Keşfedin"
+  },
+  "about": {
+    "title": "Kanduras Medya Hakkında",
+    "subtitle": "Pazarlama dünyasında 10 yılı aşkın deneyime sahip ekibimizle fark yaratıyoruz.",
+    "desc": "Kanduras Medya olarak, işletmenizin dijital dönüşümünü stratejik bir bakış açısıyla ele alıyoruz. Her iş ortağımız için yenilikçi yaklaşımlar geliştiriyor, markanızın dijital dünyada güçlü bir konumda olmasını sağlıyoruz.",
+    "achievements": [
+      "10+ Yıllık Sektör Tecrübesi",
+      "150+ Memnun İş Ortağı",
+      "Ödüllü Pazarlama Yaklaşımları",
+      "Yatırım Getirisi Odaklı Çalışma"
+    ],
+    "cta": "Daha Fazla Bilgi"
+  },
+  "stats": [
+    { "value": "10+", "label": "Yıllık Tecrübe" },
+    { "value": "150+", "label": "Memnun Müşteri" },
+    { "value": "450+", "label": "Tamamlanan Proje" },
+    { "value": "35+", "label": "Sektör Ödülü" }
+  ],
+  "portfolio": {
+    "title": "Son Projelerimiz",
+    "subtitle": "Müşterilerimiz için hayata geçirdiğimiz başarı hikayelerinden bazıları:",
+    "projects": [
+      {
+        "image": "https://images.unsplash.com/photo-1654593405070-d7b7eec8476a?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "title": "Apple Deposu Sosyal Medya Kampanyası",
+        "category": "Sosyal Medya",
+        "projectId": "apple-store"
+      },
+      {
+        "image": "https://images.pexels.com/photos/5077047/pexels-photo-5077047.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+        "title": "Pro-Tech SEO Optimizasyonu",
+        "category": "SEO",
+        "projectId": "pro-tech"
+      },
+      {
+        "image": "https://news.ki.se/sites/nyheter/files/styles/article_full_width/public/qbank/Dermalyser-InAction6_custom20240320102447.webp",
+        "title": "Cilt Doktoru Uygulaması",
+        "category": "Uygulama",
+        "projectId": "skinDoctorApp"
+      }
+    ],
+    "cta": "Tüm Projelerimizi Görün"
+  },
+  "testimonials": {
+    "title": "Müşterilerimiz Ne Diyor?",
+    "subtitle": "Başarılarımızın arkasında iş ortaklarımızın deneyimleri var.",
+    "list": [
+      {
+        "content": "Kanduras Medya ile çalışmaya başladıktan sonra sosyal medya takipçilerimiz %200 arttı ve satışlarımız önemli ölçüde yükseldi. Profesyonel ekipleri, sürekli iletişim halinde olmaları ve sonuç odaklı yaklaşımları için teşekkür ederiz.",
+        "author": "Ahmet Yılmaz",
+        "position": "Pazarlama Direktörü",
+        "company": "TechCorp",
+        "image": "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      },
+      {
+        "content": "SEO çalışmalarında gerçekten uzmanlar. Sitemizdeki organik trafik 6 ay içinde 3 katına çıktı ve dönüşüm oranlarımız belirgin şekilde yükseldi. Stratejik yaklaşımları ve şeffaf raporlamaları için Kanduras Medya'ya teşekkürler.",
+        "author": "Zeynep Kaya",
+        "position": "CEO",
+        "company": "FreshFoods",
+        "image": "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      },
+      {
+        "content": "Uzun süre dijital pazarlama konusunda doğru partneri aradık ve Kanduras Medya ile çalışmaya başladığımızda ne kadar doğru bir karar verdiğimizi anladık. Google Ads kampanyalarımız ile yatırım getirisi oranımız %300'e ulaştı.",
+        "author": "Mehmet Öztürk",
+        "position": "Kurucu",
+        "company": "DesignStudio",
+        "image": "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      }
+    ]
+  },
+  "cta": {
+    "title": "Dijital Pazarlama Stratejinizi Güçlendirmeye Hazır mısınız?",
+    "subtitle": "Ücretsiz danışmanlık için hemen bizimle iletişime geçin. Markanızı bir üst seviyeye taşıyalım.",
+    "cta_offer": "Ücretsiz Danışmanlık Alın",
+    "cta_services": "Hizmetlerimizi İnceleyin"
+  },
+  "header": {
+    "brand": "KandurasMedya",
+    "nav": [
+      { "name": "Ana Sayfa", "path": "/" },
+      { "name": "Hakkımızda", "path": "/about" },
+      { "name": "Hizmetler", "path": "/services" },
+      { "name": "Çalışmalar", "path": "/portfolio" },
+      { "name": "Blog", "path": "/blog" },
+      { "name": "İletişim", "path": "/contact" }
+    ]
+  },
+  "footer": {
+    "brand": "KandurasMedya",
+    "desc": "Dijital dünyada markanızı ileriye taşıyan, yaratıcı ve stratejik pazarlama çözümleri.",
+    "quickLinksTitle": "Hızlı Bağlantılar",
+    "quickLinks": [
+      { "name": "Ana Sayfa", "path": "/" },
+      { "name": "Hakkımızda", "path": "/about" },
+      { "name": "Hizmetlerimiz", "path": "/services" },
+      { "name": "Çalışmalarımız", "path": "/portfolio" },
+      { "name": "Blog", "path": "/blog" },
+      { "name": "İletişim", "path": "/contact" }
+    ],
+    "servicesTitle": "Hizmetlerimiz",
+    "services": [
+      "Sosyal Medya Yönetimi",
+      "SEO Optimizasyonu",
+      "İçerik Üreticileri İçin",
+      "Google Ads Yönetimi",
+      "Web Tasarım & Geliştirme",
+      "E-posta Pazarlaması",
+      "Uygulama Geliştirme"
+    ],
+    "contactTitle": "İletişim",
+    "address": "İstasyon Yolu Sk. No: 3/1, Maltepe, İstanbul",
+    "phone": ["+90 850 441 75 49", "+90 538 587 39 84"],
+    "email": "bilgi@kandurasmedya.com",
+    "supportEmail": "destek@kandurasmedya.com",
+    "copyright": "Tüm hakları saklıdır."
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Dijital pazarlama dünyasından en güncel bilgiler, ipuçları ve stratejiler",
+    "filters": ["Tümü", "Sosyal Medya", "SEO", "İçerik", "Google Ads", "E-ticaret", "E-posta"],
+    "readMore": "Devamını Oku",
+    "searchPlaceholder": "Blog yazısı ara...",
+    "noResults": "Sonuç Bulunamadı",
+    "noResultsDesc": "Aramanızla eşleşen blog yazısı bulunamadı.",
+    "showAll": "Tüm Yazıları Göster",
+    "newsletterTitle": "Dijital Pazarlama Bültenimize Abone Olun",
+    "newsletterDesc": "En güncel dijital pazarlama trendleri, ipuçları ve stratejileri için bültenimize abone olun.",
+    "newsletterPlaceholder": "E-posta adresiniz",
+    "newsletterCta": "Abone Ol"
+  },
+  "contact": {
+    "title": "İletişim",
+    "subtitle": "Dijital pazarlama ihtiyaçlarınız için bizimle iletişime geçin",
+    "infoTitle": "İletişim Bilgilerimiz",
+    "infoSubtitle": "Dijital pazarlama stratejileriniz için bizimle iletişime geçin",
+    "addressTitle": "Adres",
+    "address": "İstasyon Yolu Sk. No: 3/1 Maltepe, İstanbul, Türkiye",
+    "phoneTitle": "Telefon",
+    "phone": ["+90 850 441 75 49", "+90 538 587 39 84"],
+    "emailTitle": "E-posta",
+    "email": ["bilgi@kandurasmedya.com", "bilgi@kandurasmedya.com"],
+    "workHoursTitle": "Çalışma Saatleri",
+    "workHours": ["Pazartesi - Cuma: 09:00 - 18:00", "Cumartesi: 10:00 - 14:00"],
+    "socialTitle": "Sosyal Medya",
+    "formTitle": "Bize Ulaşın",
+    "form": {
+      "name": "İsim Soyisim",
+      "email": "E-posta",
+      "phone": "Telefon",
+      "subject": "Konu",
+      "message": "Mesajınız",
+      "agree": "Kişisel verilerimin işlenmesine ilişkin gizlilik politikasını okudum ve kabul ediyorum.",
+      "submit": "Mesaj Gönder",
+      "submitting": "Gönderiliyor...",
+      "subjectOptions": [
+        "Konu Seçiniz",
+        "Genel Bilgi",
+        "Hizmet Talebi",
+        "Fiyat Teklifi",
+        "İş Birliği",
+        "Diğer"
+      ],
+      "placeholders": {
+        "name": "İsim Soyisim",
+        "email": "ornek@email.com",
+        "phone": "(555) 123 45 67",
+        "message": "Mesajınızı buraya yazın..."
+      }
+    },
+    "formSuccess": "Mesajınız başarıyla gönderildi! En kısa sürede size dönüş yapacağız.",
+    "formErrors": {
+      "name": "İsim zorunludur",
+      "email": "E-posta zorunludur",
+      "emailInvalid": "Geçerli bir e-posta adresi giriniz",
+      "phone": "Telefon numarası zorunludur",
+      "subject": "Konu seçimi zorunludur",
+      "message": "Mesaj zorunludur",
+      "agree": "Gizlilik politikasını kabul etmelisiniz"
+    }
+  },
+  "notFound": {
+    "title": "404",
+    "subtitle": "Sayfa Bulunamadı",
+    "desc": "Aradığınız sayfa mevcut değil veya taşınmış olabilir. Lütfen ana sayfaya dönerek devam edin.",
+    "cta": "Ana Sayfaya Dön"
+  },
+  "pages": {
+    "about": {
+      "title": "Hakkımızda",
+      "subtitle": "Kanduras Medya olarak, markaların dijital dünyada güçlü bir şekilde var olmaları için stratejik pazarlama çözümleri sunuyoruz.",
+      "storyTitle": "Hikayemiz",
+      "storySubtitle": "Dijital pazarlamada fark yaratan yaklaşımımız",
+      "storyDesc1": "2015 yılında Mehmet Cansız tarafından kurulan Kanduras Medya, markaların dijital dünyada güçlü bir şekilde var olmaları için stratejik pazarlama çözümleri sunan bir ajans olarak yola çıktı.",
+      "storyDesc2": "Yıllar içinde ekibimizi genişleterek ve uzmanlık alanlarımızı çeşitlendirerek, günümüzde 150'den fazla markaya hizmet veren, sektörünün öncü ajanslarından biri haline geldik.",
+      "storyDesc3": "Kanduras Medya olarak, teknolojik gelişmeleri yakından takip ediyor, veri odaklı stratejiler geliştiriyor ve müşterilerimize özel çözümler sunuyoruz. Amacımız, müşterilerimizin dijital varlıklarını güçlendirmek ve işletmelerini bir sonraki seviyeye taşımaktır.",
+      "storyCta": "Bizimle İletişime Geçin",
+      "valuesTitle": "Değerlerimiz",
+      "valuesSubtitle": "İşimizi yaparken bizi yönlendiren temel prensiplerimiz",
+      "values": [
+        {
+          "title": "Müşteri Odaklılık",
+          "desc": "Her müşterimizin benzersiz ihtiyaçlarını anlar, stratejilerimizi bu doğrultuda şekillendiririz."
+        },
+        {
+          "title": "Yenilikçilik",
+          "desc": "Dijital pazarlama dünyasındaki en son trendleri takip eder, yenilikçi stratejiler geliştiririz."
+        },
+        {
+          "title": "Mükemmellik",
+          "desc": "Her projede en yüksek kaliteyi sunmayı ve müşterilerimizin beklentilerini aşmayı hedefleriz."
+        },
+        {
+          "title": "Sonuç Odaklılık",
+          "desc": "Müşterilerimizin işletmelerine gerçek değer katan, ölçülebilir sonuçlar elde etmek için çalışırız."
+        }
+      ],
+      "teamTitle": "Ekibimiz",
+      "teamSubtitle": "Uzman kadromuzla dijital pazarlama dünyasında fark yaratıyoruz",
+      "team": [
+        {
+          "name": "Kerem Karay",
+          "position": "Kurucu & CEO",
+          "image": "https://kandurasmedya.com/assets/kerem.jpg"
+        },
+        {
+          "name": "Ceren Uğurlu",
+          "position": "Yönetici Asistanı",
+          "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGakHEDzyuY5q9MRlNv-vaGDDSHQKzDzIcrQ&s"
+        },
+        {
+          "name": "Hasan Koçal",
+          "position": "Yazılım Geliştirici",
+          "image": "https://media.licdn.com/dms/image/v2/C4D03AQFFZIogoWR06g/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1659624618585?e=2147483647&v=beta&t=_LChQ_anwLywkcPjpZ-kFYh-zol4A0_UtVUqj-CEKbQ"
+        },
+        {
+          "name": "Zeynep Şahin",
+          "position": "Sosyal Medya Yöneticisi",
+          "image": "https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+        }
+      ],
+      "ctaTitle": "Markanızı Beraber Büyütelim",
+      "ctaDesc": "Dijital pazarlama hedeflerinize ulaşmak için bizimle iletişime geçin. Markanıza özel stratejiler geliştirmek için hazırız.",
+      "ctaCta": "Ücretsiz Danışmanlık Alın"
+    },
+    "services": {
+      "title": "Sunduğumuz Dijital Pazarlama Çözümleri",
+      "subtitle": "Yapay zeka destekli dijital pazarlama stratejilerimizle işletmenizi bir adım öne taşıyın",
+      "sectionTitle": "Sunduğumuz Hizmetler",
+      "sectionSubtitle": "Yapay zeka destekli dijital pazarlama çözümlerimiz",
+      "ctaTitle": "Dijital Başarı Yolculuğunuza Başlayın",
+      "ctaDesc": "Dijital pazarlama hedeflerinize ulaşmak için bizimle iletişime geçin. İşletmenize özel çözümler ile markanızı bir sonraki seviyeye taşıyalım.",
+      "ctaCta": "Ücretsiz Danışmanlık Alın",
+      "servicesCta": "Bu Hizmet Hakkında Bilgi Alın",
+      "featuresTitle": "Neler Sunuyoruz:"
+    },
+    "portfolio": {
+      "title": "Başarı Hikayelerimiz",
+      "subtitle": "Müşterilerimiz için geliştirdiğimiz yapay zeka destekli dijital pazarlama projeleri",
+      "filters": ["Tümü", "Sosyal Medya", "SEO", "Uygulama"],
+      "ctaTitle": "Bir Sonraki Başarı Hikayesi Sizin Olsun",
+      "ctaDesc": "Dijital pazarlama hedeflerinize ulaşmak için stratejik çözümler sunan ekibimizle tanışın. Markanızı bir sonraki seviyeye taşıyalım.",
+      "ctaCta": "Ücretsiz Danışmanlık Alın",
+      "modalClose": "Kapat",
+      "modalDetailsTitle": "Proje Detayları",
+      "modalResultsTitle": "Sonuçlar"
+    }
+  }
+} 
