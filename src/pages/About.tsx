@@ -150,15 +150,7 @@ const About: React.FC = () => {
               />
 
               <p className="text-dark-300 mb-6">
-                2015 yılında Mehmet Cansız tarafından kurulan Kanduras Medya, markaların dijital dünyada güçlü bir şekilde var olmaları için stratejik pazarlama çözümleri sunan bir ajans olarak yola çıktı.
-              </p>
-
-              <p className="text-dark-300 mb-6">
-                Yıllar içinde ekibimizi genişleterek ve uzmanlık alanlarımızı çeşitlendirerek, günümüzde 150'den fazla markaya hizmet veren, sektörünün öncü ajanslarından biri haline geldik.
-              </p>
-
-              <p className="text-dark-300 mb-8">
-                Kanduras Medya olarak, teknolojik gelişmeleri yakından takip ediyor, veri odaklı stratejiler geliştiriyor ve müşterilerimize özel çözümler sunuyoruz. Amacımız, müşterilerimizin dijital varlıklarını güçlendirmek ve işletmelerini bir sonraki seviyeye taşımaktır.
+                {siteSettings?.about_desc || 'Kanduras Medya olarak, işletmenizin dijital dönüşümünü stratejik bir bakış açısıyla ele alıyoruz. Her iş ortağımız için yenilikçi yaklaşımlar geliştiriyor, markanızın dijital dünyada güçlü bir konumda olmasını sağlıyoruz.'}
               </p>
 
               <Link to="/contact">

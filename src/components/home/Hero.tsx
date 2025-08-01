@@ -4,10 +4,11 @@ import { ArrowRight, Brain, Megaphone, BarChart } from 'lucide-react';
 import Button from '../ui/Button';
 import strings from '../../content';
 import { useSite } from '../../context/SiteContext';
+import { RefreshCw } from 'lucide-react';
 
 const Hero: React.FC = () => {
   const s = strings.hero;
-  const { siteSettings, loading } = useSite();
+  const { siteSettings, loading, refreshSettings } = useSite();
 
 
 
@@ -20,11 +21,18 @@ const Hero: React.FC = () => {
     );
   }
 
+  // Debug log
+  console.log('🎯 Hero component - siteSettings:', siteSettings);
+  console.log('🎯 Hero component - loading:', loading);
+  
   // Dinamik veriler
   const heroTitle = siteSettings?.hero_title || s.title;
   const heroSubtitle = siteSettings?.hero_subtitle || s.subtitle;
   const heroCtaOffer = siteSettings?.hero_cta_offer || s.cta_offer;
   const heroCtaServices = siteSettings?.hero_cta_services || s.cta_services;
+  
+  console.log('🎯 Hero component - heroTitle:', heroTitle);
+  console.log('🎯 Hero component - heroSubtitle:', heroSubtitle);
 
 
 
@@ -60,11 +68,20 @@ const Hero: React.FC = () => {
                 </Button>
               </Link>
             </div>
+            
+            {/* Manuel Yenileme Butonu */}
+            <button
+              onClick={refreshSettings}
+              className="mt-4 flex items-center gap-2 text-sm text-gray-300 hover:text-white transition-colors"
+            >
+              <RefreshCw size={16} />
+              Verileri Yenile
+            </button>
           </div>
 
           <div className="space-y-6">
             {/* Service Cards */}
-            {s.cards.map((card, i) => (
+            {(siteSettings?.hero_cards || s.cards).map((card, i) => (
               <div key={i} className="bg-white bg-opacity-10 rounded-2xl p-6 shadow-lg">
                 <div className="flex items-start">
                   <div className="p-3 bg-accent-500 rounded-lg mr-4">

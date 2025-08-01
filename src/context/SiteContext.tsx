@@ -31,12 +31,19 @@ function SiteProvider({ children }: SiteProviderProps) {
 
   const loadSettings = async () => {
     try {
+      console.log('🔄 SiteContext: Ayarlar yükleniyor...');
       setLoading(true);
       setError(null);
       
-      const settings = await getSiteSettings();
+      const result = await getSiteSettings();
+      console.log('✅ SiteContext: Ayarlar yüklendi:', result);
+      
+      // Veri yapısını düzelt - data objesi içinden çıkar
+      const settings = result.data || result;
+      console.log('✅ SiteContext: Düzeltilmiş ayarlar:', settings);
       setSiteSettings(settings);
     } catch (err) {
+      console.error('❌ SiteContext: Ayarlar yüklenirken hata:', err);
       setError(err instanceof Error ? err.message : 'Bilinmeyen hata');
     } finally {
       setLoading(false);
@@ -44,6 +51,7 @@ function SiteProvider({ children }: SiteProviderProps) {
   };
 
   const refreshSettings = async () => {
+    console.log('🔄 SiteContext: refreshSettings çağrıldı');
     await loadSettings();
   };
 
@@ -56,6 +64,16 @@ function SiteProvider({ children }: SiteProviderProps) {
   useEffect(() => {
     loadSettings();
   }, [location.pathname]);
+
+  // Her 30 saniyede bir otomatik yenileme (manuel değişiklikler için)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      console.log('⏰ SiteContext: Otomatik yenileme...');
+      loadSettings();
+    }, 30000); // 30 saniye
+
+    return () => clearInterval(interval);
+  }, []);
 
   const value: SiteContextType = {
     siteSettings,

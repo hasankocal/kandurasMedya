@@ -1,5 +1,6 @@
 import React from 'react';
 import strings from '../../content';
+import { useSite } from '../../context/SiteContext';
 
 interface StatItemProps {
   value: string;
@@ -16,7 +17,15 @@ const StatItem: React.FC<StatItemProps> = ({ value, label }) => {
 };
 
 const Stats: React.FC = () => {
-  const stats = strings.stats;
+  const { siteSettings } = useSite();
+  
+  // Dinamik stats verileri
+  const stats = [
+    { value: siteSettings?.stats_experience || '10+', label: 'Yıllık Tecrübe' },
+    { value: siteSettings?.stats_clients || '150+', label: 'Memnun Müşteri' },
+    { value: siteSettings?.stats_projects || '450+', label: 'Tamamlanan Proje' },
+    { value: siteSettings?.stats_awards || '35+', label: 'Sektör Ödülü' }
+  ];
 
   return (
     <section className="py-16 bg-white border-y border-gray-100">

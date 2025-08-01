@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import SectionHeading from '../ui/SectionHeading';
 import { ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 import strings from '../../content';
+import { useSite } from '../../context/SiteContext';
 
 interface TestimonialProps {
   content: string;
@@ -45,34 +46,39 @@ const Testimonial: React.FC<TestimonialProps> = ({
 
 const Testimonials: React.FC = () => {
   const s = strings.testimonials;
-  const testimonials = s.list;
+  const { siteSettings } = useSite();
+  
+  // Dinamik veriler
+  const testimonialsTitle = siteSettings?.testimonials_title || s.title;
+  const testimonialsSubtitle = siteSettings?.testimonials_subtitle || s.subtitle;
+  const testimonialsList = siteSettings?.testimonials_list || s.list;
   
   const [activeIndex, setActiveIndex] = useState(0);
   
   const nextTestimonial = () => {
-    setActiveIndex((prev) => (prev + 1) % testimonials.length);
+    setActiveIndex((prev) => (prev + 1) % testimonialsList.length);
   };
   
   const prevTestimonial = () => {
-    setActiveIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+    setActiveIndex((prev) => (prev - 1 + testimonialsList.length) % testimonialsList.length);
   };
 
   return (
     <section className="py-20 bg-light-500">
       <div className="container mx-auto px-4 md:px-6">
         <SectionHeading
-          title={s.title}
-          subtitle={s.subtitle}
+          title={testimonialsTitle}
+          subtitle={testimonialsSubtitle}
           centered
         />
         
         <div className="max-w-4xl mx-auto">
           <Testimonial
-            content={testimonials[activeIndex].content}
-            author={testimonials[activeIndex].author}
-            position={testimonials[activeIndex].position}
-            company={testimonials[activeIndex].company}
-            image={testimonials[activeIndex].image}
+            content={testimonialsList[activeIndex].content}
+            author={testimonialsList[activeIndex].name}
+            position="CEO"
+            company={testimonialsList[activeIndex].company}
+            image="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
           />
           
           <div className="flex justify-center mt-10 space-x-4">
@@ -85,7 +91,7 @@ const Testimonials: React.FC = () => {
             </button>
             
             <div className="flex space-x-2 items-center">
-              {testimonials.map((_, index) => (
+              {testimonialsList.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => setActiveIndex(index)}

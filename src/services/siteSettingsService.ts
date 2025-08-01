@@ -6,13 +6,34 @@ export interface SiteSettings {
   hero_subtitle: string;
   hero_cta_offer: string;
   hero_cta_services: string;
+  hero_cards?: any[];
   about_title: string;
   about_subtitle: string;
   about_desc: string;
+  about_achievements?: string[];
+  about_cta?: string;
   stats_experience: string;
   stats_clients: string;
   stats_projects: string;
   stats_awards: string;
+  services_title?: string;
+  services_subtitle?: string;
+  services_list?: any[];
+  services_cta?: string;
+  portfolio_title?: string;
+  portfolio_subtitle?: string;
+  portfolio_cta?: string;
+  testimonials_title?: string;
+  testimonials_subtitle?: string;
+  testimonials_list?: any[];
+  cta_title?: string;
+  cta_subtitle?: string;
+  cta_button_text?: string;
+  blog_title?: string;
+  blog_subtitle?: string;
+  blog_posts?: any[];
+  portfolio_projects?: any[];
+  services_details?: any[];
   contact_address: string;
   contact_phone1: string;
   contact_phone2: string;
@@ -64,9 +85,11 @@ export const getSiteSettings = async (): Promise<SiteSettings> => {
     // Supabase response objesinden data'yı extract et
     const data = result.data;
     
-    // Cache'i güncelle
-    cachedSettings = data;
-    cacheExpiry = Date.now() + CACHE_DURATION;
+    console.log('📊 SiteSettingsService: Extracted data:', data);
+    
+    // Cache'i güncelle - DEVRE DIŞI
+    // cachedSettings = data;
+    // cacheExpiry = Date.now() + CACHE_DURATION;
 
     return data;
   } catch (error) {
@@ -80,15 +103,24 @@ export const getSiteSettings = async (): Promise<SiteSettings> => {
 
 export const updateSiteSettings = async (settings: Partial<SiteSettings>): Promise<boolean> => {
   try {
-    const { error } = await supabase
+    console.log('🔄 SiteSettingsService: Güncelleme başlatılıyor...');
+    console.log('📝 SiteSettingsService: Güncellenecek veriler:', settings);
+    
+    const { data, error } = await supabase
       .from('site_settings')
       .update(settings)
-      .eq('id', settings.id);
+      .eq('id', settings.id)
+      .select();
+
+    console.log('📊 SiteSettingsService: Supabase update response:', { data, error });
 
     if (error) {
-      console.error('Site ayarları güncellenirken hata:', error);
+      console.error('❌ SiteSettingsService: Güncelleme hatası:', error);
       return false;
     }
+
+    console.log('✅ SiteSettingsService: Güncelleme başarılı!');
+    console.log('📊 Güncellenmiş veri:', data);
 
     // Cache'i temizle
     cachedSettings = null;
@@ -96,7 +128,7 @@ export const updateSiteSettings = async (settings: Partial<SiteSettings>): Promi
 
     return true;
   } catch (error) {
-    console.error('Site ayarları güncellenirken hata:', error);
+    console.error('❌ SiteSettingsService: Güncelleme hatası:', error);
     return false;
   }
 };

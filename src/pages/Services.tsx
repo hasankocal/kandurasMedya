@@ -12,6 +12,7 @@ import {
   Smartphone,
   TrendingUp
 } from 'lucide-react';
+import { useSite } from '../context/SiteContext';
 
 interface ServiceDetailProps {
   title: string;
@@ -22,7 +23,7 @@ interface ServiceDetailProps {
 
 const ServiceDetail: React.FC<ServiceDetailProps> = ({ title, icon, description, features }) => {
   return (
-    <div className="bg-white p-8 rounded-2xl shadow-[8px_8px_16px_rgba(0,0,0,0.1),-8px_-8px_16px_rgba(255,255,255,0.8)] transform transition-all duration-300 hover:-translate-y-1 fade-in-section">
+    <div className="bg-white p-8 rounded-2xl shadow-lg">
       <div className="flex items-center mb-6">
         <div className="inline-flex items-center justify-center w-14 h-14 bg-primary-50 text-primary-600 rounded-xl shadow-[inset_4px_4px_8px_rgba(0,0,0,0.1),inset_-4px_-4px_8px_rgba(255,255,255,0.8)] mr-4">
           {icon}
@@ -68,7 +69,28 @@ const ServiceDetail: React.FC<ServiceDetailProps> = ({ title, icon, description,
 };
 
 const Services: React.FC = () => {
-  const services = [
+  const { siteSettings } = useSite();
+  
+  // Dinamik veriler
+  const servicesTitle = siteSettings?.services_title || 'Hizmetlerimiz';
+  const servicesSubtitle = siteSettings?.services_subtitle || 'İşletmenize değer katacak, pazarlama süreçlerinizi güçlendirecek çözümler sunuyoruz.';
+  const servicesList = siteSettings?.services_list || [];
+  
+  // Dinamik services detayları
+  const dynamicServices = siteSettings?.services_details || [];
+  
+  const services = dynamicServices.length > 0 ? dynamicServices.map((service, index) => ({
+    ...service,
+    icon: [
+      <Megaphone size={28} />,
+      <Search size={28} />,
+      <LineChart size={28} />,
+      <BarChart size={28} />,
+      <Globe size={28} />,
+      <Mail size={28} />,
+      <Smartphone size={28} />
+    ][index] || <Megaphone size={28} />
+  })) : [
     {
       title: "Sosyal Medya Yönetimi",
       icon: <Megaphone size={28} />,
@@ -174,9 +196,9 @@ const Services: React.FC = () => {
         <div className="absolute inset-0 bg-dark-500 opacity-50"></div>
         <div className="container mx-auto px-4 md:px-6 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">Sunduğumuz Dijital Pazarlama Çözümleri</h1>
-            <p className="text-xl text-light-300">
-              Yapay zeka destekli dijital pazarlama stratejilerimizle işletmenizi bir adım öne taşıyın
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">{servicesTitle}</h1>
+            <p className="text-xl text-gray-200">
+              {servicesSubtitle}
             </p>
           </div>
         </div>
@@ -186,8 +208,8 @@ const Services: React.FC = () => {
       <section className="py-20">
         <div className="container mx-auto px-4 md:px-6">
           <SectionHeading 
-            title="Sunduğumuz Hizmetler"
-            subtitle="Yapay zeka destekli dijital pazarlama çözümlerimiz"
+            title={servicesTitle}
+            subtitle={servicesSubtitle}
             centered
           />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -207,25 +229,25 @@ const Services: React.FC = () => {
       {/* CTA Section */}
       <section className="py-20 bg-primary-700 text-white">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="max-w-3xl mx-auto text-center fade-in-section">
+          <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Dijital Başarı Yolculuğunuza Başlayın
+              {siteSettings?.cta_title || 'Dijital Başarı Yolculuğunuza Başlayın'}
             </h2>
             
-            <p className="text-lg mb-8 text-light-300">
-              Dijital pazarlama hedeflerinize ulaşmak için bizimle iletişime geçin. 
-              İşletmenize özel çözümler ile markanızı bir sonraki seviyeye taşıyalım.
+            <p className="text-lg mb-8 text-gray-200">
+              {siteSettings?.cta_subtitle || 'Dijital pazarlama hedeflerinize ulaşmak için bizimle iletişime geçin. İşletmenize özel çözümler ile markanızı bir sonraki seviyeye taşıyalım.'}
             </p>
             
-            <Link to="/contact">
-              <Button
-                variant="secondary"
-                size="lg"
-                className="shadow-[8px_8px_16px_rgba(0,0,0,0.2),-8px_-8px_16px_rgba(255,255,255,0.1)]"
-              >
-                Ücretsiz Danışmanlık Alın
-              </Button>
-            </Link>
+            <div className="flex justify-center">
+              <Link to="/contact">
+                <Button
+                  variant="secondary"
+                  size="lg"
+                >
+                  {siteSettings?.cta_button_text || 'Ücretsiz Danışmanlık Alın'}
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>

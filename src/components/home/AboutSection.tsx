@@ -4,9 +4,18 @@ import SectionHeading from '../ui/SectionHeading';
 import Button from '../ui/Button';
 import { CheckCircle } from 'lucide-react';
 import strings from '../../content';
+import { useSite } from '../../context/SiteContext';
 
 const AboutSection: React.FC = () => {
   const s = strings.about;
+  const { siteSettings } = useSite();
+  
+  // Dinamik veriler
+  const aboutTitle = siteSettings?.about_title || s.title;
+  const aboutSubtitle = siteSettings?.about_subtitle || s.subtitle;
+  const aboutDesc = siteSettings?.about_desc || s.desc;
+  const aboutAchievements = siteSettings?.about_achievements || s.achievements;
+  const aboutCta = siteSettings?.about_cta || s.cta;
 
   return (
     <section className="py-20">
@@ -14,16 +23,16 @@ const AboutSection: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="fade-in-section">
             <SectionHeading 
-              title={s.title}
-              subtitle={s.subtitle}
+              title={aboutTitle}
+              subtitle={aboutSubtitle}
             />
 
             <p className="text-dark-300 mb-6">
-              {s.desc}
+              {aboutDesc}
             </p>
 
             <ul className="space-y-3 mb-8">
-              {s.achievements.map((item, index) => (
+              {aboutAchievements.map((item, index) => (
                 <li key={index} className="flex items-center">
                   <CheckCircle size={20} className="text-primary-600 mr-3" />
                   <span>{item}</span>
@@ -33,7 +42,7 @@ const AboutSection: React.FC = () => {
 
             <Link to="/about">
               <Button variant="primary">
-                {s.cta}
+                {aboutCta}
               </Button>
             </Link>
           </div>

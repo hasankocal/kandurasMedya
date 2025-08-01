@@ -2,10 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Instagram, Linkedin, Mail, MapPin, Phone } from 'lucide-react';
 import strings from '../../content';
+import { useSite } from '../../context/SiteContext';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
   const s = strings.footer;
+  const { siteSettings } = useSite();
 
   return (
     <footer className="bg-dark-500 text-white pt-16 pb-8">
@@ -18,7 +20,7 @@ const Footer: React.FC = () => {
               <span className="text-accent-500">Medya</span>
             </h3>
             <p className="mb-4 text-light-700 leading-relaxed">
-              {s.desc}
+              {siteSettings?.footer_desc || s.desc}
             </p>
             <div className="flex space-x-4 mt-6">
               <a href="#" className="hover:text-accent-500 transition-colors p-2" aria-label="Facebook">
@@ -71,26 +73,27 @@ const Footer: React.FC = () => {
               <li className="flex items-start">
                 <MapPin size={20} className="mr-2 mt-1 flex-shrink-0" />
                 <span className="text-light-700">
-                  {s.address}
+                  {siteSettings?.contact_address || s.address}
                 </span>
               </li>
               <li className="flex items-start">
                 <Phone size={20} className="mr-2 mt-1 flex-shrink-0" />
                 <span className="text-light-700">
-                  {s.phone.map((p, i) => <span key={i}>{p}<br /></span>)}
+                  {siteSettings?.contact_phone1 || s.phone[0]}<br />
+                  {siteSettings?.contact_phone2 || s.phone[1]}
                 </span>
               </li>
               <li className="flex items-start">
                 <Mail size={20} className="mr-2 mt-1 flex-shrink-0" />
                 <div className="text-light-700">
                   <div className="mb-2">
-                    <a href={`mailto:${s.email}`} className="hover:text-accent-500 transition-colors block">
-                      {s.email}
+                    <a href={`mailto:${siteSettings?.contact_email || s.email}`} className="hover:text-accent-500 transition-colors block">
+                      {siteSettings?.contact_email || s.email}
                     </a>
                   </div>
                   <div>
-                    <a href={`mailto:${s.supportEmail}`} className="hover:text-accent-500 transition-colors block">
-                      {s.supportEmail}
+                    <a href={`mailto:${siteSettings?.contact_support_email || s.supportEmail}`} className="hover:text-accent-500 transition-colors block">
+                      {siteSettings?.contact_support_email || s.supportEmail}
                     </a>
                   </div>
                 </div>

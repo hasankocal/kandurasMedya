@@ -186,8 +186,7 @@ const Contact: React.FC = () => {
                   <div>
                     <h3 className="text-lg font-semibold mb-1">Adres</h3>
                     <p className="text-dark-300">
-                      İstasyon Yolu Sk. No: 3/1<br />
-                      Maltepe, İstanbul, Türkiye
+                      {siteSettings?.contact_address || 'İstasyon Yolu Sk. No: 3/1, Maltepe, İstanbul'}
                     </p>
                   </div>
                 </div>
@@ -199,8 +198,8 @@ const Contact: React.FC = () => {
                   <div>
                     <h3 className="text-lg font-semibold mb-1">Telefon</h3>
                     <p className="text-dark-300">
-                      +90 850 441 75 49<br />
-                      +90 538 587 39 84
+                      {siteSettings?.contact_phone1 || '+90 850 441 75 49'}<br />
+                      {siteSettings?.contact_phone2 || '+90 538 587 39 84'}
                     </p>
                   </div>
                 </div>
@@ -212,8 +211,8 @@ const Contact: React.FC = () => {
                   <div>
                     <h3 className="text-lg font-semibold mb-1">E-posta</h3>
                     <p className="text-dark-300">
-                      bilgi@kandurasmedya.com<br />
-                      destek@kandurasmedya.com
+                      {siteSettings?.contact_email || 'bilgi@kandurasmedya.com'}<br />
+                      {siteSettings?.contact_support_email || 'destek@kandurasmedya.com'}
                     </p>
                   </div>
                 </div>

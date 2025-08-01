@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import SectionHeading from '../ui/SectionHeading';
 import Button from '../ui/Button';
 import strings from '../../content';
+import { useSite } from '../../context/SiteContext';
 
 interface ProjectCardProps {
   image: string;
@@ -39,13 +40,19 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ image, title, category, proje
 
 const Portfolio: React.FC = () => {
   const s = strings.portfolio;
+  const { siteSettings } = useSite();
+  
+  // Dinamik veriler
+  const portfolioTitle = siteSettings?.portfolio_title || s.title;
+  const portfolioSubtitle = siteSettings?.portfolio_subtitle || s.subtitle;
+  const portfolioCta = siteSettings?.portfolio_cta || s.cta;
 
   return (
     <section className="py-20 bg-white">
       <div className="container mx-auto px-4 md:px-6">
         <SectionHeading
-          title={s.title}
-          subtitle={s.subtitle}
+          title={portfolioTitle}
+          subtitle={portfolioSubtitle}
           centered
         />
 
@@ -64,7 +71,7 @@ const Portfolio: React.FC = () => {
         <div className="text-center mt-12">
           <Link to="/portfolio">
             <Button variant="outline">
-              {s.cta}
+              {portfolioCta}
             </Button>
           </Link>
         </div>

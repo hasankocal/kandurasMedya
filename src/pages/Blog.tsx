@@ -3,6 +3,7 @@ import Button from '../components/ui/Button';
 import { Search } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import strings from '../content';
+import { useSite } from '../context/SiteContext';
 
 interface BlogPost {
   id: string;
@@ -119,8 +120,14 @@ export const blogPosts: BlogPost[] = [
 
 const Blog: React.FC = () => {
   const s = strings.blog;
+  const { siteSettings } = useSite();
   const [filter, setFilter] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
+  
+  // Dinamik veriler
+  const blogTitle = siteSettings?.blog_title || s.title;
+  const blogSubtitle = siteSettings?.blog_subtitle || s.subtitle;
+  const blogPosts = siteSettings?.blog_posts || blogPosts;
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -141,9 +148,9 @@ const Blog: React.FC = () => {
         <div className="absolute inset-0 bg-dark-500 opacity-50"></div>
         <div className="container mx-auto px-4 md:px-6 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">{s.title}</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">{blogTitle}</h1>
             <p className="text-xl text-light-300">
-              {s.subtitle}
+              {blogSubtitle}
             </p>
           </div>
         </div>

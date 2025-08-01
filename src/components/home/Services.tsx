@@ -4,6 +4,7 @@ import SectionHeading from '../ui/SectionHeading';
 import { Link } from 'react-router-dom';
 import Button from '../ui/Button';
 import strings from '../../content';
+import { useSite } from '../../context/SiteContext';
 
 interface ServiceCardProps {
   title: string;
@@ -31,7 +32,15 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon }) =
 
 const Services: React.FC = () => {
   const s = strings.services;
-  const services = s.list.map((service, index) => ({
+  const { siteSettings } = useSite();
+  
+  // Dinamik veriler
+  const servicesTitle = siteSettings?.services_title || s.title;
+  const servicesSubtitle = siteSettings?.services_subtitle || s.subtitle;
+  const servicesCta = siteSettings?.services_cta || s.cta;
+  const servicesList = siteSettings?.services_list || s.list;
+  
+  const services = servicesList.map((service, index) => ({
     ...service,
     icon: [
       <Megaphone size={28} />,
@@ -48,8 +57,8 @@ const Services: React.FC = () => {
     <section className="py-20 bg-light-500">
       <div className="container mx-auto px-4 md:px-6">
         <SectionHeading
-          title={s.title}
-          subtitle={s.subtitle}
+          title={servicesTitle}
+          subtitle={servicesSubtitle}
           centered
         />
 
@@ -67,7 +76,7 @@ const Services: React.FC = () => {
         <div className="text-center mt-16">
           <Link to="/services">
             <Button variant="primary" size="lg">
-              {s.cta}
+              {servicesCta}
             </Button>
           </Link>
         </div>

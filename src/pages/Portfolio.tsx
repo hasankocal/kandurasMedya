@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Button from '../components/ui/Button';
+import { useSite } from '../context/SiteContext';
 
 interface Project {
   id: string;
@@ -109,10 +110,18 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
 };
 
 const Portfolio: React.FC = () => {
+  const { siteSettings } = useSite();
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [filter, setFilter] = useState<string>('all');
+  
+  // Dinamik veriler
+  const portfolioTitle = siteSettings?.portfolio_title || 'Başarı Hikayelerimiz';
+  const portfolioSubtitle = siteSettings?.portfolio_subtitle || 'Müşterilerimiz için geliştirdiğimiz yapay zeka destekli dijital pazarlama projeleri';
 
-  const projects: Project[] = [
+  // Dinamik projeler
+  const dynamicProjects = siteSettings?.portfolio_projects || [];
+  
+  const projects: Project[] = dynamicProjects.length > 0 ? dynamicProjects : [
     {
       id: "apple-store",
       title: "Apple Deposu Sosyal Medya Kampanyası",
@@ -176,9 +185,9 @@ const Portfolio: React.FC = () => {
         <div className="absolute inset-0 bg-dark-500 opacity-50"></div>
         <div className="container mx-auto px-4 md:px-6 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">Başarı Hikayelerimiz</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">{portfolioTitle}</h1>
             <p className="text-xl text-light-300">
-              Müşterilerimiz için geliştirdiğimiz yapay zeka destekli dijital pazarlama projeleri
+              {portfolioSubtitle}
             </p>
           </div>
         </div>
@@ -188,7 +197,7 @@ const Portfolio: React.FC = () => {
       <section className="py-20">
         <div className="container mx-auto px-4 md:px-6">
           {/* Filters */}
-          <div className="flex flex-wrap justify-center gap-3 mb-12 fade-in-section">
+          <div className="flex flex-wrap justify-center gap-3 mb-12">
             <button
               className={`px-4 py-2 rounded-full shadow-[4px_4px_8px_rgba(0,0,0,0.1),-4px_-4px_8px_rgba(255,255,255,0.8)] ${
                 filter === 'all'
@@ -246,24 +255,25 @@ const Portfolio: React.FC = () => {
       {/* CTA Section */}
       <section className="py-20 bg-primary-700 text-white">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="max-w-3xl mx-auto text-center fade-in-section">
+          <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
               Bir Sonraki Başarı Hikayesi Sizin Olsun
             </h2>
             
-            <p className="text-lg mb-8 text-light-300">
+            <p className="text-lg mb-8 text-gray-200">
               Dijital pazarlama hedeflerinize ulaşmak için stratejik çözümler sunan ekibimizle tanışın.
               Markanızı bir sonraki seviyeye taşıyalım.
             </p>
             
-            <Button
-              variant="secondary"
-              size="lg"
-              className="shadow-[8px_8px_16px_rgba(0,0,0,0.2),-8px_-8px_16px_rgba(255,255,255,0.1)]"
-              onClick={() => window.location.href = '/contact'}
-            >
-              Ücretsiz Danışmanlık Alın
-            </Button>
+            <div className="flex justify-center">
+              <Button
+                variant="secondary"
+                size="lg"
+                onClick={() => window.location.href = '/contact'}
+              >
+                Ücretsiz Danışmanlık Alın
+              </Button>
+            </div>
           </div>
         </div>
       </section>
