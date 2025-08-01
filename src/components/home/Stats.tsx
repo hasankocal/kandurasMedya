@@ -19,6 +19,8 @@ const StatItem: React.FC<StatItemProps> = ({ value, label }) => {
 const Stats: React.FC = () => {
   const { siteSettings } = useSite();
   
+
+  
   // Dinamik stats verileri
   const stats = [
     { value: siteSettings?.stats_experience || '10+', label: 'Yıllık Tecrübe' },
@@ -30,6 +32,11 @@ const Stats: React.FC = () => {
   return (
     <section className="py-16 bg-white border-y border-gray-100">
       <div className="container mx-auto px-4 md:px-6">
+        {/* Veri kaynağı göstergesi */}
+        <div className="mb-8 p-3 bg-primary-100 rounded-lg text-sm text-center">
+          <span className="font-semibold">Stats Veri Kaynağı:</span> {siteSettings ? '🟢 Supabase' : '🔴 Statik'}
+        </div>
+        
         <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 gap-6 md:gap-4">
           {stats.map((stat, index) => (
             <StatItem key={index} value={stat.value} label={stat.label} />

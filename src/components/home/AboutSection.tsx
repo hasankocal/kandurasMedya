@@ -10,6 +10,8 @@ const AboutSection: React.FC = () => {
   const s = strings.about;
   const { siteSettings } = useSite();
   
+
+  
   // Dinamik veriler
   const aboutTitle = siteSettings?.about_title || s.title;
   const aboutSubtitle = siteSettings?.about_subtitle || s.subtitle;
@@ -20,6 +22,11 @@ const AboutSection: React.FC = () => {
   return (
     <section className="py-20">
       <div className="container mx-auto px-4 md:px-6">
+        {/* Veri kaynağı göstergesi */}
+        <div className="mb-8 p-3 bg-primary-100 rounded-lg text-sm text-center">
+          <span className="font-semibold">About Veri Kaynağı:</span> {siteSettings ? '🟢 Supabase' : '🔴 Statik'}
+        </div>
+        
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="fade-in-section">
             <SectionHeading 

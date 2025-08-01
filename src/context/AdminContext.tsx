@@ -98,6 +98,18 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
 
       if (projectsError) throw projectsError;
 
+      // Sayfa görüntüleme sayısını al
+      const { data: totalViewsData, error: viewsError } = await supabase
+        .rpc('get_total_page_views');
+
+      if (viewsError) console.error('Sayfa görüntüleme hatası:', viewsError);
+
+      // Dönüşüm oranını al
+      const { data: conversionRateData, error: conversionError } = await supabase
+        .rpc('get_conversion_rate');
+
+      if (conversionError) console.error('Dönüşüm oranı hatası:', conversionError);
+
       // İstatistikleri hesapla
       const newContacts = contactsData?.filter(c => c.status === 'new').length || 0;
       
@@ -106,8 +118,8 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
         newContacts,
         totalBlogPosts: blogData?.length || 0,
         totalProjects: projectsData?.length || 0,
-        totalViews: 1250,
-        conversionRate: 3.2
+        totalViews: totalViewsData || 0,
+        conversionRate: conversionRateData || 0
       });
 
       setRecentContacts(contactsData?.slice(0, 5) || []);

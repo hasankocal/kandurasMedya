@@ -10,20 +10,19 @@ const Hero: React.FC = () => {
   const s = strings.hero;
   const { siteSettings, loading, refreshSettings } = useSite();
 
-
-
   // Loading durumunda basit bir gösterim
   if (loading) {
     return (
       <section className="relative bg-gradient-to-r from-primary-900 to-primary-700 text-white min-h-screen flex items-center justify-center">
-        <div>Yükleniyor...</div>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+          <p>Supabase'den veriler yükleniyor...</p>
+        </div>
       </section>
     );
   }
 
-  // Debug log
-  console.log('🎯 Hero component - siteSettings:', siteSettings);
-  console.log('🎯 Hero component - loading:', loading);
+
   
   // Dinamik veriler
   const heroTitle = siteSettings?.hero_title || s.title;
@@ -31,9 +30,6 @@ const Hero: React.FC = () => {
   const heroCtaOffer = siteSettings?.hero_cta_offer || s.cta_offer;
   const heroCtaServices = siteSettings?.hero_cta_services || s.cta_services;
   
-  console.log('🎯 Hero component - heroTitle:', heroTitle);
-  console.log('🎯 Hero component - heroSubtitle:', heroSubtitle);
-
 
 
   return (
@@ -43,6 +39,11 @@ const Hero: React.FC = () => {
       <div className="container mx-auto px-4 md:px-6 py-12 md:py-20 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           <div>
+            {/* Veri kaynağı göstergesi */}
+            <div className="mb-4 p-2 bg-white bg-opacity-20 rounded-lg text-sm">
+              <span className="font-semibold">Veri Kaynağı:</span> {siteSettings ? '🟢 Supabase' : '🔴 Statik'}
+            </div>
+            
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-white">
               {heroTitle}
             </h1>
@@ -99,8 +100,6 @@ const Hero: React.FC = () => {
           </div>
         </div>
       </div>
-      
-
     </section>
   );
 };

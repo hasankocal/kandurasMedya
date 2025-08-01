@@ -34,6 +34,8 @@ const Services: React.FC = () => {
   const s = strings.services;
   const { siteSettings } = useSite();
   
+
+  
   // Dinamik veriler
   const servicesTitle = siteSettings?.services_title || s.title;
   const servicesSubtitle = siteSettings?.services_subtitle || s.subtitle;
@@ -56,6 +58,11 @@ const Services: React.FC = () => {
   return (
     <section className="py-20 bg-light-500">
       <div className="container mx-auto px-4 md:px-6">
+        {/* Veri kaynağı göstergesi */}
+        <div className="mb-8 p-3 bg-primary-100 rounded-lg text-sm text-center">
+          <span className="font-semibold">Services Veri Kaynağı:</span> {siteSettings ? '🟢 Supabase' : '🔴 Statik'}
+        </div>
+        
         <SectionHeading
           title={servicesTitle}
           subtitle={servicesSubtitle}

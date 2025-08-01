@@ -43,6 +43,44 @@ export interface SiteSettings {
   updated_at?: string;
 }
 
+export interface Project {
+  id: string;
+  title: string;
+  description: string;
+  image_url: string;
+  category: string;
+  client: string;
+  completed_at: string;
+  created_at: string;
+  results?: string[];
+}
+
+export interface BlogCategory {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string;
+  color: string;
+  icon?: string;
+  is_active: boolean;
+  sort_order: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface BlogPost {
+  id: string;
+  title: string;
+  content: string;
+  excerpt: string;
+  image_url: string;
+  category_id?: string;
+  category?: BlogCategory;
+  published: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
 let cachedSettings: SiteSettings | null = null;
 let cacheExpiry: number = 0;
 const CACHE_DURATION = 30 * 60 * 1000; // 30 dakika
@@ -50,12 +88,6 @@ let isLoading = false;
 let loadPromise: Promise<SiteSettings> | null = null;
 
 export const getSiteSettings = async (): Promise<SiteSettings> => {
-  // Cache kontrolü - DEVRE DIŞI (Her istekte Supabase'e git)
-  // if (cachedSettings && Date.now() < cacheExpiry) {
-  //   console.log('📦 Cache\'den site ayarları döndürülüyor');
-  //   return cachedSettings;
-  // }
-
   // Eğer zaten yükleniyorsa, mevcut promise'i bekle
   if (isLoading && loadPromise) {
     return loadPromise;
@@ -73,31 +105,190 @@ export const getSiteSettings = async (): Promise<SiteSettings> => {
       .from('site_settings')
       .select('*')
       .single();
-
+    
     loadPromise = Promise.race([supabasePromise, timeoutPromise]) as Promise<any>;
     const result = await loadPromise;
 
     if (result.error) {
-      console.error('Site ayarları yüklenirken hata:', result.error);
+      console.error('❌ SiteSettingsService: Supabase hatası:', result.error);
       return getDefaultSettings();
     }
 
     // Supabase response objesinden data'yı extract et
     const data = result.data;
     
-    console.log('📊 SiteSettingsService: Extracted data:', data);
+    if (!data) {
+      return getDefaultSettings();
+    }
     
-    // Cache'i güncelle - DEVRE DIŞI
-    // cachedSettings = data;
-    // cacheExpiry = Date.now() + CACHE_DURATION;
-
     return data;
   } catch (error) {
-    console.error('❌ Site ayarları yüklenirken hata:', error);
+    console.error('❌ SiteSettingsService: Genel hata:', error);
     return getDefaultSettings();
   } finally {
     isLoading = false;
     loadPromise = null;
+  }
+};
+
+export const getProjects = async (): Promise<Project[]> => {
+  try {
+    const { data, error } = await supabase
+      .from('projects')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('❌ SiteSettingsService: Projects hatası:', error);
+      return [];
+    }
+    
+    return data || [];
+  } catch (error) {
+    console.error('❌ SiteSettingsService: Projects genel hata:', error);
+    return [];
+  }
+};
+
+export const getBlogPosts = async (): Promise<BlogPost[]> => {
+  try {
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select(`
+        *,
+        category:blog_categories(*)
+      `)
+      .eq('published', true)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('❌ SiteSettingsService: Blog posts hatası:', error);
+      return [];
+    }
+    
+    return data || [];
+  } catch (error) {
+    console.error('❌ SiteSettingsService: Blog posts genel hata:', error);
+    return [];
+  }
+};
+
+export const getBlogCategories = async (): Promise<BlogCategory[]> => {
+  try {
+    const { data, error } = await supabase
+      .from('blog_categories')
+      .select('*')
+      .eq('is_active', true)
+      .order('sort_order', { ascending: true });
+
+    if (error) {
+      console.error('❌ SiteSettingsService: Blog categories hatası:', error);
+      return [];
+    }
+    
+    return data || [];
+  } catch (error) {
+    console.error('❌ SiteSettingsService: Blog categories genel hata:', error);
+    return [];
+  }
+};
+
+export const createBlogCategory = async (category: Omit<BlogCategory, 'id' | 'created_at' | 'updated_at'>): Promise<BlogCategory | null> => {
+  try {
+    const { data, error } = await supabase
+      .from('blog_categories')
+      .insert([category])
+      .select()
+      .single();
+
+    if (error) {
+      console.error('❌ SiteSettingsService: Kategori oluşturma hatası:', error);
+      return null;
+    }
+    
+    return data;
+  } catch (error) {
+    console.error('❌ SiteSettingsService: Kategori oluşturma genel hata:', error);
+    return null;
+  }
+};
+
+export const updateBlogCategory = async (id: string, category: Partial<BlogCategory>): Promise<BlogCategory | null> => {
+  try {
+    const { data, error } = await supabase
+      .from('blog_categories')
+      .update(category)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) {
+      console.error('❌ SiteSettingsService: Kategori güncelleme hatası:', error);
+      return null;
+    }
+    
+    return data;
+  } catch (error) {
+    console.error('❌ SiteSettingsService: Kategori güncelleme genel hata:', error);
+    return null;
+  }
+};
+
+export const deleteBlogCategory = async (id: string): Promise<boolean> => {
+  try {
+    const { error } = await supabase
+      .from('blog_categories')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      console.error('❌ SiteSettingsService: Kategori silme hatası:', error);
+      return false;
+    }
+    
+    return true;
+  } catch (error) {
+    console.error('❌ SiteSettingsService: Kategori silme genel hata:', error);
+    return false;
+  }
+};
+
+export const subscribeToNewsletter = async (email: string): Promise<{ success: boolean; message: string }> => {
+  try {
+    const { data, error } = await supabase
+      .from('newsletter_subscribers')
+      .insert([{ email }])
+      .select();
+
+    if (error) {
+      console.error('❌ SiteSettingsService: Newsletter hatası:', error);
+
+      // Eğer email zaten varsa
+      if (error.code === '23505') {
+        return { success: false, message: 'Bu e-posta adresi zaten abone!' };
+      }
+
+      return { success: false, message: 'Abonelik işlemi başarısız oldu. Lütfen tekrar deneyin.' };
+    }
+    
+    // Dönüşüm tracking ekle
+    try {
+      await supabase
+        .from('conversions')
+        .insert([
+          {
+            type: 'newsletter_signup',
+            source: 'blog'
+          }
+        ]);
+    } catch (conversionError) {
+      console.error('Conversion tracking error:', conversionError);
+    }
+    
+    return { success: true, message: 'Bültenimize başarıyla abone oldunuz!' };
+  } catch (error) {
+    console.error('❌ SiteSettingsService: Newsletter genel hata:', error);
+    return { success: false, message: 'Bir hata oluştu. Lütfen tekrar deneyin.' };
   }
 };
 
@@ -134,25 +325,28 @@ export const updateSiteSettings = async (settings: Partial<SiteSettings>): Promi
 };
 
 // Varsayılan ayarlar
-const getDefaultSettings = (): SiteSettings => ({
-  hero_title: 'Kanduras Medya ile Dijital Potansiyelinizi Keşfedin',
-  hero_subtitle: 'Yapay zeka destekli stratejilerle markanızı zirveye taşıyoruz.',
-  hero_cta_offer: 'Ücretsiz Teklif Al',
-  hero_cta_services: 'Hizmetlerimiz',
-  about_title: 'Kanduras Medya Hakkında',
-  about_subtitle: 'Pazarlama dünyasında 10 yılı aşkın deneyime sahip ekibimizle fark yaratıyoruz.',
-  about_desc: 'Kanduras Medya olarak, işletmenizin dijital dönüşümünü stratejik bir bakış açısıyla ele alıyoruz. Her iş ortağımız için yenilikçi yaklaşımlar geliştiriyor, markanızın dijital dünyada güçlü bir konumda olmasını sağlıyoruz.',
-  stats_experience: '10+',
-  stats_clients: '150+',
-  stats_projects: '450+',
-  stats_awards: '35+',
-  contact_address: 'İstasyon Yolu Sk. No: 3/1, Maltepe, İstanbul',
-  contact_phone1: '+90 850 441 75 49',
-  contact_phone2: '+90 538 587 39 84',
-  contact_email: 'bilgi@kandurasmedya.com',
-  contact_support_email: 'destek@kandurasmedya.com',
-  footer_desc: 'Dijital dünyada markanızı ileriye taşıyan, yaratıcı ve stratejik pazarlama çözümleri.'
-});
+const getDefaultSettings = (): SiteSettings => {
+  console.log('📋 SiteSettingsService: Varsayılan ayarlar döndürülüyor');
+  return {
+    hero_title: 'Kanduras Medya ile Dijital Potansiyelinizi Keşfedin',
+    hero_subtitle: 'Yapay zeka destekli stratejilerle markanızı zirveye taşıyoruz.',
+    hero_cta_offer: 'Ücretsiz Teklif Al',
+    hero_cta_services: 'Hizmetlerimiz',
+    about_title: 'Kanduras Medya Hakkında',
+    about_subtitle: 'Pazarlama dünyasında 10 yılı aşkın deneyime sahip ekibimizle fark yaratıyoruz.',
+    about_desc: 'Kanduras Medya olarak, işletmenizin dijital dönüşümünü stratejik bir bakış açısıyla ele alıyoruz. Her iş ortağımız için yenilikçi yaklaşımlar geliştiriyor, markanızın dijital dünyada güçlü bir konumda olmasını sağlıyoruz.',
+    stats_experience: '10+',
+    stats_clients: '150+',
+    stats_projects: '450+',
+    stats_awards: '35+',
+    contact_address: 'İstasyon Yolu Sk. No: 3/1, Maltepe, İstanbul',
+    contact_phone1: '+90 850 441 75 49',
+    contact_phone2: '+90 538 587 39 84',
+    contact_email: 'bilgi@kandurasmedya.com',
+    contact_support_email: 'destek@kandurasmedya.com',
+    footer_desc: 'Dijital dünyada markanızı ileriye taşıyan, yaratıcı ve stratejik pazarlama çözümleri.'
+  };
+};
 
 // Cache'i temizle
 export const clearSettingsCache = () => {

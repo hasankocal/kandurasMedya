@@ -20,9 +20,7 @@ const AdminLogin: React.FC = () => {
       // Basit hash kontrolü (production'da daha güvenli yöntem kullanın)
       const hashedPassword = await hashPassword(password);
       
-      console.log('🔍 Admin Login: Giriş denemesi...');
-      console.log('📧 Email:', email);
-      console.log('🔐 Hash:', hashedPassword);
+      
       
       const { data, error } = await supabase
         .from('users')
@@ -31,7 +29,7 @@ const AdminLogin: React.FC = () => {
         .eq('password_hash', hashedPassword)
         .single();
 
-      console.log('📊 Supabase response:', { data, error });
+  
 
       if (error || !data) {
         setError('E-posta veya şifre hatalı');

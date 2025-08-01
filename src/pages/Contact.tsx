@@ -26,6 +26,8 @@ interface FormErrors {
 const Contact: React.FC = () => {
   const { siteSettings } = useSite();
   
+
+  
   const [formValues, setFormValues] = useState<FormValues>({
     name: '',
     email: '',
@@ -154,6 +156,11 @@ const Contact: React.FC = () => {
 
   return (
     <div>
+      {/* Veri kaynağı göstergesi */}
+      <div className="fixed top-20 right-4 z-50 p-3 bg-primary-100 rounded-lg text-sm shadow-lg">
+        <span className="font-semibold">Contact Veri Kaynağı:</span> {siteSettings ? '🟢 Supabase' : '🔴 Statik'}
+      </div>
+      
       {/* Hero Section */}
       <section className="bg-primary-700 text-white py-24 relative">
         <div className="absolute inset-0 bg-dark-500 opacity-50"></div>
@@ -299,10 +306,10 @@ const Contact: React.FC = () => {
                       name="name"
                       value={formValues.name}
                       onChange={handleChange}
-                      className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-                        errors.name ? 'border-red-500' : 'border-gray-300'
+                      className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
+                        errors.name ? 'border-red-500' : 'border-light-700'
                       }`}
-                      placeholder="İsim Soyisim"
+                      placeholder="Adınız ve soyadınız"
                     />
                     {errors.name && (
                       <p className="text-red-500 text-sm mt-1">{errors.name}</p>
@@ -319,8 +326,8 @@ const Contact: React.FC = () => {
                       name="email"
                       value={formValues.email}
                       onChange={handleChange}
-                      className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-                        errors.email ? 'border-red-500' : 'border-gray-300'
+                      className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
+                        errors.email ? 'border-red-500' : 'border-light-700'
                       }`}
                       placeholder="ornek@email.com"
                     />
@@ -341,10 +348,10 @@ const Contact: React.FC = () => {
                       name="phone"
                       value={formValues.phone}
                       onChange={handleChange}
-                      className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-                        errors.phone ? 'border-red-500' : 'border-gray-300'
+                      className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
+                        errors.phone ? 'border-red-500' : 'border-light-700'
                       }`}
-                      placeholder="(555) 123 45 67"
+                      placeholder="+90 5XX XXX XX XX"
                     />
                     {errors.phone && (
                       <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
@@ -360,16 +367,18 @@ const Contact: React.FC = () => {
                       name="subject"
                       value={formValues.subject}
                       onChange={handleChange}
-                      className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-                        errors.subject ? 'border-red-500' : 'border-gray-300'
+                      className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
+                        errors.subject ? 'border-red-500' : 'border-light-700'
                       }`}
                     >
-                      <option value="">Konu Seçiniz</option>
+                      <option value="">Konu seçiniz</option>
+                      <option value="Sosyal Medya Yönetimi">Sosyal Medya Yönetimi</option>
+                      <option value="SEO Optimizasyonu">SEO Optimizasyonu</option>
+                      <option value="Google Ads Yönetimi">Google Ads Yönetimi</option>
+                      <option value="Web Tasarım & Geliştirme">Web Tasarım & Geliştirme</option>
+                      <option value="E-posta Pazarlaması">E-posta Pazarlaması</option>
+                      <option value="Uygulama Geliştirme">Uygulama Geliştirme</option>
                       <option value="Genel Bilgi">Genel Bilgi</option>
-                      <option value="Hizmet Talebi">Hizmet Talebi</option>
-                      <option value="Fiyat Teklifi">Fiyat Teklifi</option>
-                      <option value="İş Birliği">İş Birliği</option>
-                      <option value="Diğer">Diğer</option>
                     </select>
                     {errors.subject && (
                       <p className="text-red-500 text-sm mt-1">{errors.subject}</p>
@@ -386,11 +395,11 @@ const Contact: React.FC = () => {
                     name="message"
                     value={formValues.message}
                     onChange={handleChange}
-                    rows={5}
-                    className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-                      errors.message ? 'border-red-500' : 'border-gray-300'
+                    rows={6}
+                    className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
+                      errors.message ? 'border-red-500' : 'border-light-700'
                     }`}
-                    placeholder="Mesajınızı buraya yazın..."
+                    placeholder="Projeniz hakkında detaylı bilgi veriniz..."
                   ></textarea>
                   {errors.message && (
                     <p className="text-red-500 text-sm mt-1">{errors.message}</p>
@@ -398,19 +407,20 @@ const Contact: React.FC = () => {
                 </div>
                 
                 <div className="mb-6">
-                  <div className="flex items-start">
+                  <label className="flex items-start">
                     <input
                       type="checkbox"
-                      id="agree"
                       name="agree"
                       checked={formValues.agree}
                       onChange={handleCheckboxChange}
-                      className="mr-2 mt-1"
+                      className="mt-1 mr-3 rounded border-light-700 text-primary-600 focus:ring-primary-500"
                     />
-                    <label htmlFor="agree" className="text-dark-300 text-sm">
-                      Kişisel verilerimin işlenmesine ilişkin <a href="#" className="text-primary-600 hover:underline">gizlilik politikasını</a> okudum ve kabul ediyorum.*
-                    </label>
-                  </div>
+                    <span className="text-sm text-dark-300">
+                      <a href="#" className="text-primary-600 hover:text-primary-700 underline">
+                        Gizlilik Politikası
+                      </a>'nı okudum ve kabul ediyorum.*
+                    </span>
+                  </label>
                   {errors.agree && (
                     <p className="text-red-500 text-sm mt-1">{errors.agree}</p>
                   )}
@@ -419,22 +429,20 @@ const Contact: React.FC = () => {
                 <Button
                   type="submit"
                   variant="primary"
+                  size="lg"
                   className="w-full"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? (
-                    <span className="flex items-center justify-center">
-                      <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
                       Gönderiliyor...
-                    </span>
+                    </>
                   ) : (
-                    <span className="flex items-center justify-center">
+                    <>
                       <Send size={20} className="mr-2" />
                       Mesaj Gönder
-                    </span>
+                    </>
                   )}
                 </Button>
               </form>

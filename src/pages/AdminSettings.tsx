@@ -58,23 +58,17 @@ const AdminSettings: React.FC = () => {
 
   const fetchSettings = async () => {
     try {
-      console.log('🔍 AdminSettings: Ayarlar yükleniyor...');
       const { data, error } = await supabase
         .from('site_settings')
         .select('*')
         .single();
-
-      console.log('📊 AdminSettings: Supabase response:', { data, error });
 
       if (error && error.code !== 'PGRST116') { // PGRST116 = no rows returned
         throw error;
       }
 
       if (data) {
-        console.log('✅ AdminSettings: Ayarlar yüklendi:', data);
         setSettings(data);
-      } else {
-        console.log('⚠️ AdminSettings: Veri bulunamadı');
       }
     } catch (error) {
       console.error('❌ AdminSettings: Ayarlar yüklenirken hata:', error);
@@ -88,43 +82,33 @@ const AdminSettings: React.FC = () => {
     setSaving(true);
     setMessage('');
 
-    console.log('🚀 AdminSettings: Form gönderiliyor...');
-    console.log('📝 AdminSettings: Gönderilecek veriler:', settings);
-
     try {
       let result;
       
       if (settings.id) {
         // Güncelleme
-        console.log('🔄 AdminSettings: Güncelleme yapılıyor, ID:', settings.id);
         result = await supabase
           .from('site_settings')
           .update(settings)
           .eq('id', settings.id);
       } else {
         // Yeni kayıt
-        console.log('➕ AdminSettings: Yeni kayıt oluşturuluyor');
         result = await supabase
           .from('site_settings')
           .insert([settings]);
       }
-
-      console.log('📊 AdminSettings: Supabase update response:', result);
 
       if (result.error) {
         console.error('❌ AdminSettings: Güncelleme hatası:', result.error);
         throw result.error;
       }
 
-      console.log('✅ AdminSettings: Güncelleme başarılı!');
       setMessage('Ayarlar başarıyla kaydedildi!');
       
       // Cache'i temizle ve SiteContext'i yenile
-      console.log('🔄 AdminSettings: Cache temizleniyor...');
       clearSettingsCache();
       
       // SiteContext'i yenile
-      console.log('🔄 AdminSettings: SiteContext yenileniyor...');
       await refreshSettings();
       
       setTimeout(() => setMessage(''), 3000);

@@ -35,6 +35,20 @@ export const submitContactForm = async (data: ContactFormData): Promise<ContactR
       throw new Error('Veritabanı hatası');
     }
 
+    // Dönüşüm tracking ekle
+    try {
+      await supabase
+        .from('conversions')
+        .insert([
+          {
+            type: 'contact_form',
+            source: 'contact'
+          }
+        ]);
+    } catch (conversionError) {
+      console.error('Conversion tracking error:', conversionError);
+    }
+
     return {
       success: true,
       message: 'Mesajınız başarıyla gönderildi! En kısa sürede size dönüş yapacağız.'

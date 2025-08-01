@@ -1,14 +1,46 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { blogPosts } from './Blog';
+import { getBlogPosts, BlogPost } from '../services/siteSettingsService';
 
 const BlogDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const post = blogPosts.find(post => post.id === id);
+  const [post, setPost] = useState<BlogPost | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+    
+    const loadBlogPost = async () => {
+      try {
+                setLoading(true);
+
+        const blogPostsData = await getBlogPosts();
+        const foundPost = blogPostsData.find(p => p.id === id);
+
+        setPost(foundPost || null);
+      } catch (error) {
+        console.error('❌ BlogDetail: Blog post yüklenirken hata:', error);
+        setPost(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      loadBlogPost();
+    }
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="container mx-auto px-4 py-20">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mb-4"></div>
+          <p className="text-dark-300">Blog yazısı yükleniyor...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!post) {
     return (
@@ -31,13 +63,17 @@ const BlogDetail: React.FC = () => {
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="container mx-auto px-4 text-center text-white">
             <span className="inline-block px-4 py-2 bg-primary-600 text-white rounded-full mb-4">
-              {post.category}
+              {typeof post.category === 'string' ? post.category : post.category?.name || 'Genel'}
             </span>
             <h1 className="text-4xl md:text-5xl font-bold mb-4">{post.title}</h1>
             <div className="flex items-center justify-center space-x-4 text-light-300">
-              <span>{post.date}</span>
+              <span>{new Date(post.created_at).toLocaleDateString('tr-TR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })}</span>
               <span>•</span>
-              <span>{post.author}</span>
+              <span>Kanduras Medya</span>
             </div>
           </div>
         </div>
@@ -47,15 +83,15 @@ const BlogDetail: React.FC = () => {
       <section className="py-20">
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-3xl mx-auto prose prose-lg">
-            <p className="text-xl text-dark-300 mb-8">{post.excerpt}</p>
+            <p className="text-xl text-dark-300 mb-8">{post.excerpt || post.content.substring(0, 200) + '...'}</p>
             <h2 className="text-2xl font-bold mb-4">Giriş</h2>
             <p>
-              Dijital pazarlama dünyası sürekli değişiyor ve gelişiyor. Bu yazıda, {post.category.toLowerCase()} 
+              Dijital pazarlama dünyası sürekli değişiyor ve gelişiyor. Bu yazıda, {(typeof post.category === 'string' ? post.category : post.category?.name || 'Genel').toLowerCase()} 
               alanındaki en güncel stratejileri ve başarılı olmanız için gereken ipuçlarını paylaşacağız.
             </p>
             <h2 className="text-2xl font-bold mb-4">Neden Önemli?</h2>
             <p>
-              Günümüzde işletmeler için {post.category.toLowerCase()} stratejileri, başarılı bir dijital varlık
+              Günümüzde işletmeler için {(typeof post.category === 'string' ? post.category : post.category?.name || 'Genel').toLowerCase()} stratejileri, başarılı bir dijital varlık
               için vazgeçilmez bir unsur haline geldi. Doğru stratejilerle hedef kitlenize ulaşmak ve
               onlarla etkili iletişim kurmak her zamankinden daha önemli.
             </p>

@@ -23,43 +23,47 @@ interface ServiceDetailProps {
 
 const ServiceDetail: React.FC<ServiceDetailProps> = ({ title, icon, description, features }) => {
   return (
-    <div className="bg-white p-8 rounded-2xl shadow-lg">
-      <div className="flex items-center mb-6">
-        <div className="inline-flex items-center justify-center w-14 h-14 bg-primary-50 text-primary-600 rounded-xl shadow-[inset_4px_4px_8px_rgba(0,0,0,0.1),inset_-4px_-4px_8px_rgba(255,255,255,0.8)] mr-4">
+    <div className="bg-white p-4 md:p-3 lg:p-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
+      <div className="flex items-center mb-4 md:mb-3 lg:mb-4">
+        <div className="inline-flex items-center justify-center w-10 h-10 md:w-9 md:h-9 lg:w-10 lg:h-10 bg-gradient-to-br from-primary-500 to-primary-600 text-white rounded-lg shadow-sm mr-3 md:mr-2 lg:mr-3">
           {icon}
         </div>
-        <h3 className="text-2xl font-semibold">{title}</h3>
+        <h3 className="text-lg md:text-base lg:text-lg font-bold text-dark-900">{title}</h3>
       </div>
       
-      <p className="text-dark-300 mb-6">{description}</p>
+      <p className="text-dark-600 mb-4 md:mb-3 lg:mb-4 text-sm md:text-xs lg:text-sm leading-relaxed">{description}</p>
       
-      <h4 className="font-semibold mb-3">Neler Sunuyoruz:</h4>
-      
-      <ul className="space-y-2 mb-6">
-        {features.map((feature, index) => (
-          <li key={index} className="flex items-start">
-            <svg 
-              className="text-primary-600 w-5 h-5 mr-2 mt-1" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth="2" 
-                d="M5 13l4 4L19 7" 
-              />
-            </svg>
-            <span>{feature}</span>
-          </li>
-        ))}
-      </ul>
+      <div className="bg-gradient-to-r from-primary-50 to-accent-50 p-3 md:p-2 lg:p-3 rounded-md mb-4 md:mb-3 lg:mb-4">
+        <h4 className="font-bold text-dark-900 mb-2 md:mb-1.5 lg:mb-2 text-sm md:text-xs lg:text-sm">🚀 Neler Sunuyoruz:</h4>
+        
+        <ul className="space-y-1.5 md:space-y-1 lg:space-y-1.5">
+          {features.map((feature, index) => (
+            <li key={index} className="flex items-start">
+              <div className="flex-shrink-0 w-4 h-4 md:w-3.5 md:h-3.5 lg:w-4 lg:h-4 bg-primary-600 text-white rounded-full flex items-center justify-center mr-2 mt-0.5">
+                <svg 
+                  className="w-2.5 h-2.5 md:w-2 md:h-2 lg:w-2.5 lg:h-2.5" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth="2" 
+                    d="M5 13l4 4L19 7" 
+                  />
+                </svg>
+              </div>
+              <span className="text-dark-700 text-xs md:text-xs lg:text-xs font-medium">{feature}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
       
       <Link to="/contact">
         <Button 
-          variant="outline" 
-          className="w-full shadow-[4px_4px_8px_rgba(0,0,0,0.1),-4px_-4px_8px_rgba(255,255,255,0.8)]"
+          variant="primary" 
+          className="w-full py-2.5 md:py-2 lg:py-2.5 text-sm md:text-xs lg:text-sm font-semibold shadow-sm hover:shadow-md transition-all duration-300"
         >
           Bu Hizmet Hakkında Bilgi Alın
         </Button>
@@ -70,6 +74,8 @@ const ServiceDetail: React.FC<ServiceDetailProps> = ({ title, icon, description,
 
 const Services: React.FC = () => {
   const { siteSettings } = useSite();
+  
+
   
   // Dinamik veriler
   const servicesTitle = siteSettings?.services_title || 'Hizmetlerimiz';
@@ -120,51 +126,51 @@ const Services: React.FC = () => {
       icon: <LineChart size={28} />,
       description: "Yapay zeka teknolojileri ile hedef kitlenize özel, değer sunan içerikler üretiyoruz. Blog yazıları, infografikler ve videolar ile markanızın otoritesini güçlendiriyoruz.",
       features: [
-        "YZ Destekli İçerik Stratejisi",
-        "Otomatik Blog Yazıları",
-        "Görsel İçerik Üretimi",
-        "Video İçerik Optimizasyonu",
-        "İçerik Performans Analizi"
+        "YZ Destekli İçerik Üretimi",
+        "SEO Odaklı İçerik Stratejisi",
+        "Görsel İçerik Tasarımı",
+        "Video İçerik Üretimi",
+        "İçerik Takvimi Yönetimi"
       ]
     },
     {
       title: "Google Ads Yönetimi",
       icon: <BarChart size={28} />,
-      description: "Yapay zeka destekli reklam optimizasyonu ile Google Ads kampanyalarınızı yönetiyoruz. Arama ağı, görüntülü reklam ağı ve video reklamları ile marka bilinirliğinizi artırıyor ve dönüşüm oranlarınızı yükseltiyoruz.",
+      description: "Yapay zeka destekli Google Ads kampanyaları ile hedef kitlenize ulaşın. Akıllı teklif stratejileri, performans optimizasyonu ve ROI odaklı yaklaşımlarla reklam bütçenizi verimli kullanın.",
       features: [
-        "YZ Destekli Teklif Stratejileri",
-        "Akıllı Kampanya Optimizasyonu",
-        "Dinamik Reklam Oluşturma",
-        "Otomatik A/B Testleri",
-        "Gelişmiş Hedefleme"
+        "YZ Destekli Anahtar Kelime Analizi",
+        "Akıllı Teklif Stratejileri",
+        "Performans Optimizasyonu",
+        "ROI Odaklı Kampanya Yönetimi",
+        "Detaylı Raporlama ve Analiz"
       ]
     },
     {
       title: "Web Tasarım & Geliştirme",
       icon: <Globe size={28} />,
-      description: "Modern, kullanıcı dostu ve mobil uyumlu web siteleri tasarlıyor ve geliştiriyoruz. Yapay zeka destekli tasarım araçları ile markanızın kimliğini yansıtan, teknik olarak güçlü web siteleri oluşturuyoruz.",
+      description: "Modern, kullanıcı dostu ve mobil uyumlu web siteleri geliştiriyoruz. Yapay zeka destekli tasarım araçları ile kullanıcı deneyimini ön planda tutarak, dönüşüm odaklı web siteleri oluşturuyoruz.",
       features: [
-        "YZ Destekli Tasarım Önerileri",
-        "Responsive Tasarım",
+        "Responsive Web Tasarım",
+        "Kullanıcı Deneyimi (UX) Optimizasyonu",
         "SEO Uyumlu Kodlama",
-        "Performans Optimizasyonu",
-        "Güvenlik Önlemleri"
+        "Hızlı Yükleme Süreleri",
+        "Güvenlik ve Performans Optimizasyonu"
       ]
     },
     {
       title: "E-posta Pazarlaması",
       icon: <Mail size={28} />,
-      description: "Yapay zeka ile kişiselleştirilmiş e-posta kampanyaları oluşturuyoruz. Otomatik e-posta dizileri, haber bültenleri ve promosyon kampanyaları ile müşteri bağlılığını artırıyoruz.",
+      description: "Kişiselleştirilmiş e-posta kampanyaları ile müşterilerinizle güçlü bağlar kurun. Yapay zeka destekli segmentasyon ve otomasyon ile e-posta pazarlamanızı bir üst seviyeye taşıyın.",
       features: [
-        "YZ Destekli İçerik Oluşturma",
-        "Akıllı Segment Analizi",
-        "Otomatik A/B Testleri",
-        "Kişiselleştirilmiş Kampanyalar",
-        "Performans Takibi"
+        "YZ Destekli Segmentasyon",
+        "Otomatik E-posta Kampanyaları",
+        "Kişiselleştirilmiş İçerik",
+        "A/B Test Optimizasyonu",
+        "Performans Analizi ve Raporlama"
       ]
     },
     {
-      title: "Mobil Uygulama Geliştirme",
+      title: "Uygulama Geliştirme",
       icon: <Smartphone size={28} />,
       description: "Yapay zeka destekli mobil uygulama geliştirme hizmetleri sunuyoruz. iOS ve Android platformları için kullanıcı dostu, performanslı ve güvenli uygulamalar geliştiriyoruz.",
       features: [
@@ -174,45 +180,67 @@ const Services: React.FC = () => {
         "Performans Optimizasyonu",
         "App Store Optimizasyonu (ASO)"
       ]
-    },
-    {
-      title: "Dijital Pazarlama Danışmanlığı",
-      icon: <TrendingUp size={28} />,
-      description: "Dijital pazarlama stratejilerinizi yapay zeka destekli analizlerle optimize ediyoruz. Kapsamlı pazarlama denetimleri, rakip analizleri ve stratejik planlama ile işletmenizi büyütüyoruz.",
-      features: [
-        "YZ Destekli Pazar Analizi",
-        "Rekabet Analizi",
-        "Stratejik Planlama",
-        "ROI Optimizasyonu",
-        "Performans Raporlama"
-      ]
     }
   ];
 
   return (
     <div>
+      {/* Veri kaynağı göstergesi */}
+      <div className="fixed top-20 right-4 z-50 p-3 bg-primary-100 rounded-lg text-sm shadow-lg">
+        <span className="font-semibold">Services Veri Kaynağı:</span> {siteSettings ? '🟢 Supabase' : '🔴 Statik'}
+      </div>
+      
       {/* Hero Section */}
-      <section className="bg-primary-700 text-white py-24 relative">
-        <div className="absolute inset-0 bg-dark-500 opacity-50"></div>
+      <section className="bg-gradient-to-br from-primary-700 via-primary-600 to-primary-800 text-white py-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-dark-500 opacity-40"></div>
+        <div className="absolute top-0 left-0 w-full h-full">
+          <div className="absolute top-20 left-10 w-20 h-20 bg-white opacity-10 rounded-full"></div>
+          <div className="absolute top-40 right-20 w-16 h-16 bg-accent-400 opacity-20 rounded-full"></div>
+          <div className="absolute bottom-20 left-1/4 w-12 h-12 bg-white opacity-15 rounded-full"></div>
+        </div>
         <div className="container mx-auto px-4 md:px-6 relative z-10">
-          <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">{servicesTitle}</h1>
-            <p className="text-xl text-gray-200">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="inline-flex items-center px-4 py-2 bg-white bg-opacity-20 rounded-full text-sm font-medium mb-6 backdrop-blur-sm">
+              <TrendingUp size={16} className="mr-2" />
+              Yapay Zeka Destekli Çözümler
+            </div>
+            <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
+              {servicesTitle}
+            </h1>
+            <p className="text-xl md:text-2xl text-light-300 mb-8 leading-relaxed">
               {servicesSubtitle}
             </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <div className="flex items-center text-sm">
+                <div className="w-2 h-2 bg-accent-400 rounded-full mr-2"></div>
+                <span>10+ Yıl Deneyim</span>
+              </div>
+              <div className="flex items-center text-sm">
+                <div className="w-2 h-2 bg-accent-400 rounded-full mr-2"></div>
+                <span>150+ Başarılı Proje</span>
+              </div>
+              <div className="flex items-center text-sm">
+                <div className="w-2 h-2 bg-accent-400 rounded-full mr-2"></div>
+                <span>%95 Müşteri Memnuniyeti</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Services Section */}
-      <section className="py-20">
+      {/* Services */}
+      <section className="py-24 bg-gradient-to-b from-white to-gray-50">
         <div className="container mx-auto px-4 md:px-6">
-          <SectionHeading 
-            title={servicesTitle}
-            subtitle={servicesSubtitle}
-            centered
-          />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold mb-6 text-dark-900">
+              Kapsamlı Dijital Pazarlama Çözümlerimiz
+            </h2>
+            <p className="text-xl text-dark-600 max-w-3xl mx-auto">
+              Her hizmetimiz, yapay zeka teknolojileri ile desteklenerek maksimum verim ve sonuç odaklı yaklaşımla sunulmaktadır.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-6 lg:gap-8">
             {services.map((service, index) => (
               <ServiceDetail
                 key={index}
@@ -227,24 +255,35 @@ const Services: React.FC = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-primary-700 text-white">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              {siteSettings?.cta_title || 'Dijital Başarı Yolculuğunuza Başlayın'}
+      <section className="py-24 bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 text-white relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-full">
+          <div className="absolute top-10 right-10 w-32 h-32 bg-white opacity-5 rounded-full"></div>
+          <div className="absolute bottom-10 left-10 w-24 h-24 bg-accent-400 opacity-10 rounded-full"></div>
+        </div>
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="inline-flex items-center px-6 py-3 bg-white bg-opacity-20 rounded-full text-lg font-semibold mb-8 backdrop-blur-sm">
+              <TrendingUp size={20} className="mr-3" />
+              Başarıya Giden Yol
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold mb-8 leading-tight">
+              Projenizi Hayata Geçirmeye Hazır mısınız?
             </h2>
-            
-            <p className="text-lg mb-8 text-gray-200">
-              {siteSettings?.cta_subtitle || 'Dijital pazarlama hedeflerinize ulaşmak için bizimle iletişime geçin. İşletmenize özel çözümler ile markanızı bir sonraki seviyeye taşıyalım.'}
+            <p className="text-xl md:text-2xl text-light-300 mb-10 leading-relaxed max-w-3xl mx-auto">
+              Uzman ekibimizle birlikte dijital pazarlama stratejinizi geliştirin ve hedeflerinize ulaşın. 
+              <span className="block mt-2 font-semibold text-accent-300">
+                İlk adımı atın, farkı hemen görün!
+              </span>
             </p>
-            
-            <div className="flex justify-center">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
               <Link to="/contact">
-                <Button
-                  variant="secondary"
-                  size="lg"
-                >
-                  {siteSettings?.cta_button_text || 'Ücretsiz Danışmanlık Alın'}
+                <Button variant="primary" size="lg" className="px-8 py-4 text-lg font-bold shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300">
+                  Ücretsiz Danışmanlık Alın
+                </Button>
+              </Link>
+              <Link to="/portfolio">
+                <Button variant="outline" size="lg" className="px-8 py-4 text-lg font-semibold border-white text-white hover:bg-white hover:text-primary-700 transition-all duration-300">
+                  Başarı Hikayelerimizi İnceleyin
                 </Button>
               </Link>
             </div>

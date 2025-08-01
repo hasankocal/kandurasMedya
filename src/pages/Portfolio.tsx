@@ -1,15 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '../components/ui/Button';
 import { useSite } from '../context/SiteContext';
-
-interface Project {
-  id: string;
-  title: string;
-  category: string;
-  description: string;
-  image: string;
-  results?: string[];
-}
+import { getProjects, Project } from '../services/siteSettingsService';
 
 interface ProjectCardProps {
   project: Project;
@@ -24,7 +16,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
     >
       <div className="relative h-64 overflow-hidden">
         <img 
-          src={project.image} 
+          src={project.image_url || project.image} 
           alt={project.title} 
           className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
         />
@@ -55,7 +47,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
       <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-[16px_16px_32px_rgba(0,0,0,0.2),-16px_-16px_32px_rgba(255,255,255,0.1)]">
         <div className="relative h-80 md:h-96">
           <img 
-            src={project.image} 
+            src={project.image_url || project.image} 
             alt={project.title} 
             className="w-full h-full object-cover"
           />
@@ -83,7 +75,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
             <p className="text-dark-300">{project.description}</p>
           </div>
           
-          {project.results && (
+          {project.results && project.results.length > 0 && (
             <div className="mb-6">
               <h3 className="text-lg font-semibold mb-2">Sonuçlar</h3>
               <ul className="list-disc pl-5 space-y-1">
@@ -98,7 +90,6 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
             <Button 
               variant="outline" 
               onClick={onClose}
-              className="shadow-[4px_4px_8px_rgba(0,0,0,0.1),-4px_-4px_8px_rgba(255,255,255,0.8)]"
             >
               Kapat
             </Button>
@@ -113,55 +104,68 @@ const Portfolio: React.FC = () => {
   const { siteSettings } = useSite();
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [filter, setFilter] = useState<string>('all');
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+  
+
+  
+  // Projects tablosundan veri çek
+  useEffect(() => {
+    const loadProjects = async () => {
+      try {
+        setLoading(true);
+        
+        const projectsData = await getProjects();
+        
+        // Eğer projects tablosu boşsa, site_settings'teki portfolio_projects'i kullan
+        if (projectsData.length === 0 && siteSettings?.portfolio_projects) {
+          const siteSettingsProjects = siteSettings.portfolio_projects.map((project: any) => ({
+            id: project.id,
+            title: project.title,
+            description: project.description,
+            image_url: project.image,
+            category: project.category,
+            client: project.client || 'Bilinmeyen',
+            completed_at: project.completed_at || new Date().toISOString(),
+            created_at: project.created_at || new Date().toISOString(),
+            results: project.results || []
+          }));
+          setProjects(siteSettingsProjects);
+        } else {
+          setProjects(projectsData);
+        }
+      } catch (error) {
+        console.error('❌ Portfolio page: Projects yüklenirken hata:', error);
+        // Hata durumunda site_settings'teki portfolio_projects'i kullan
+        if (siteSettings?.portfolio_projects) {
+          const fallbackProjects = siteSettings.portfolio_projects.map((project: any) => ({
+            id: project.id,
+            title: project.title,
+            description: project.description,
+            image_url: project.image,
+            category: project.category,
+            client: project.client || 'Bilinmeyen',
+            completed_at: project.completed_at || new Date().toISOString(),
+            created_at: project.created_at || new Date().toISOString(),
+            results: project.results || []
+          }));
+          setProjects(fallbackProjects);
+        } else {
+          setProjects([]);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProjects();
+  }, [siteSettings]);
   
   // Dinamik veriler
   const portfolioTitle = siteSettings?.portfolio_title || 'Başarı Hikayelerimiz';
   const portfolioSubtitle = siteSettings?.portfolio_subtitle || 'Müşterilerimiz için geliştirdiğimiz yapay zeka destekli dijital pazarlama projeleri';
 
-  // Dinamik projeler
-  const dynamicProjects = siteSettings?.portfolio_projects || [];
-  
-  const projects: Project[] = dynamicProjects.length > 0 ? dynamicProjects : [
-    {
-      id: "apple-store",
-      title: "Apple Deposu Sosyal Medya Kampanyası",
-      category: "Sosyal Medya",
-      description: "Apple ürünleri satan mağaza için geliştirdiğimiz yapay zeka destekli sosyal medya stratejisi ile marka bilinirliğini artırdık ve hedef kitleyle güçlü bir bağ kurduk. Instagram ve Facebook üzerinden yürüttüğümüz kampanyalarla, etkileşim oranlarında belirgin bir artış sağladık.",
-      image: "https://images.unsplash.com/photo-1654593405070-d7b7eec8476a?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      results: [
-        "Sosyal medya takipçi sayısında %150 artış",
-        "Etkileşim oranlarında %75 iyileşme",
-        "Kampanya dönemi boyunca satışlarda %35 artış",
-        "Marka bilinirliğinde ölçülebilir gelişme"
-      ]
-    },
-    {
-      id: "pro-tech",
-      title: "Pro-Tech SEO Optimizasyonu",
-      category: "SEO",
-      description: "Teknoloji şirketi için YZ Destekli kapsamlı bir SEO stratejisi geliştirerek, arama motorlarında görünürlüklerini artırdık. Teknik SEO iyileştirmeleri, içerik optimizasyonu ve link building çalışmaları ile organik trafiği önemli ölçüde yükselttik.",
-      image: "https://images.pexels.com/photos/5077047/pexels-photo-5077047.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-      results: [
-        "Hedef anahtar kelimelerde ilk sayfaya yükselme",
-        "Organik trafikte %200 artış",
-        "Dönüşüm oranlarında %45 iyileşme",
-        "Sitede kalma süresinde %30 artış"
-      ]
-    },
-    {
-      id: "skinDoctorApp",
-      title: "Cilt Doktoru Uygulaması",
-      category: "Uygulama",
-      description: "Yapay zeka destekli cilt doktoru uygulaması geliştirdik. Uygulama içerisinde cilt analizi yapılabilir ve cilt durumu hakkında bilgi alınabilir.",
-      image: "https://news.ki.se/sites/nyheter/files/styles/article_full_width/public/qbank/Dermalyser-InAction6_custom20240320102447.webp",
-      results: [
-        "ROAS (Reklam Harcaması Getirisi) %400",
-        "Yeni müşteri kazanımında %80 artış",
-        "Online sipariş sayısında %120 artış",
-        "Marka bilinirliğinde %60 artış"
-      ]
-    }
-  ];
+
 
   const handleProjectClick = (id: string) => {
     const project = projects.find(p => p.id === id);
@@ -178,8 +182,27 @@ const Portfolio: React.FC = () => {
     ? projects 
     : projects.filter(project => project.category === filter);
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+          <p>Projeler yükleniyor...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
+      {/* Veri kaynağı göstergesi */}
+      <div className="fixed top-20 right-4 z-50 p-3 bg-primary-100 rounded-lg text-sm shadow-lg">
+        <div className="font-semibold">Portfolio Veri Kaynağı:</div>
+        <div>Site Settings: {siteSettings ? '🟢 Supabase' : '🔴 Statik'}</div>
+        <div>Proje Sayısı: {projects.length}</div>
+        <div>Veri Kaynağı: {projects.length > 0 ? 'Projects Tablosu' : 'Site Settings'}</div>
+      </div>
+      
       {/* Hero Section */}
       <section className="bg-primary-700 text-white py-24 relative">
         <div className="absolute inset-0 bg-dark-500 opacity-50"></div>
@@ -240,37 +263,39 @@ const Portfolio: React.FC = () => {
             </button>
           </div>
 
+          {/* Projects Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredProjects.map((project) => (
-              <ProjectCard 
-                key={project.id} 
+              <ProjectCard
+                key={project.id}
                 project={project}
                 onClick={handleProjectClick}
               />
             ))}
           </div>
+
+          {filteredProjects.length === 0 && (
+            <div className="text-center py-12">
+              <h3 className="text-xl font-semibold mb-2">Bu kategoride proje bulunamadı</h3>
+              <p className="text-dark-300 mb-6">Farklı bir kategori seçmeyi deneyin</p>
+              <Button variant="outline" onClick={() => setFilter('all')}>
+                Tümünü Göster
+              </Button>
+            </div>
+          )}
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-primary-700 text-white">
+      <section className="py-20 bg-primary-50">
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Bir Sonraki Başarı Hikayesi Sizin Olsun
-            </h2>
-            
-            <p className="text-lg mb-8 text-gray-200">
-              Dijital pazarlama hedeflerinize ulaşmak için stratejik çözümler sunan ekibimizle tanışın.
-              Markanızı bir sonraki seviyeye taşıyalım.
+            <h2 className="text-3xl font-bold mb-6">Projenizi Hayata Geçirmeye Hazır mısınız?</h2>
+            <p className="text-dark-300 mb-8">
+              Uzman ekibimizle birlikte dijital pazarlama stratejinizi geliştirin ve hedeflerinize ulaşın.
             </p>
-            
             <div className="flex justify-center">
-              <Button
-                variant="secondary"
-                size="lg"
-                onClick={() => window.location.href = '/contact'}
-              >
+              <Button variant="primary" size="lg">
                 Ücretsiz Danışmanlık Alın
               </Button>
             </div>
@@ -280,7 +305,7 @@ const Portfolio: React.FC = () => {
 
       {/* Project Modal */}
       {selectedProject && (
-        <ProjectModal 
+        <ProjectModal
           project={selectedProject}
           onClose={closeModal}
         />

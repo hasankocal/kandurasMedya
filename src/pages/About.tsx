@@ -64,6 +64,8 @@ const ValueCard: React.FC<ValueCardProps> = ({ title, description, icon }) => {
 const About: React.FC = () => {
   const { siteSettings } = useSite();
   
+
+  
   const team = [
     {
       name: "Kerem Karay",
@@ -112,6 +114,11 @@ const About: React.FC = () => {
 
   return (
     <div>
+      {/* Veri kaynağı göstergesi */}
+      <div className="fixed top-20 right-4 z-50 p-3 bg-primary-100 rounded-lg text-sm shadow-lg">
+        <span className="font-semibold">About Veri Kaynağı:</span> {siteSettings ? '🟢 Supabase' : '🔴 Statik'}
+      </div>
+      
       {/* Hero Section */}
       <section className="bg-primary-700 text-white py-24 relative">
         <div className="absolute inset-0 bg-dark-500 opacity-50"></div>
