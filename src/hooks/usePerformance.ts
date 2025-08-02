@@ -17,72 +17,120 @@ export const usePerformance = () => {
     ttfb: null
   });
 
+  const isDevelopment = import.meta.env.DEV;
+
   useEffect(() => {
-    // LCP (Largest Contentful Paint)
-    const lcpObserver = new PerformanceObserver((list) => {
-      const entries = list.getEntries();
-      const lastEntry = entries[entries.length - 1] as PerformanceEntry;
-      metricsRef.current.lcp = lastEntry.startTime;
-      
-      console.log('LCP:', lastEntry.startTime);
-    });
-
-    // FID (First Input Delay)
-    const fidObserver = new PerformanceObserver((list) => {
-      const entries = list.getEntries();
-      entries.forEach((entry) => {
-        metricsRef.current.fid = entry.processingStart - entry.startTime;
-        console.log('FID:', metricsRef.current.fid);
-      });
-    });
-
-    // CLS (Cumulative Layout Shift)
-    const clsObserver = new PerformanceObserver((list) => {
-      let clsValue = 0;
-      const entries = list.getEntries() as any[];
-      
-      entries.forEach((entry) => {
-        if (!entry.hadRecentInput) {
-          clsValue += entry.value;
-        }
-      });
-      
-      metricsRef.current.cls = clsValue;
-      console.log('CLS:', clsValue);
-    });
-
-    // FCP (First Contentful Paint)
-    const fcpObserver = new PerformanceObserver((list) => {
-      const entries = list.getEntries();
-      const firstEntry = entries[0];
-      metricsRef.current.fcp = firstEntry.startTime;
-      console.log('FCP:', firstEntry.startTime);
-    });
-
-    // TTFB (Time to First Byte)
+    // TTFB (Time to First Byte) - Her zaman mevcut
     const navigationEntry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
     if (navigationEntry) {
       metricsRef.current.ttfb = navigationEntry.responseStart - navigationEntry.requestStart;
-      console.log('TTFB:', metricsRef.current.ttfb);
+      if (isDevelopment) {
+        console.log('TTFB:', navigationEntry.responseStart - navigationEntry.requestStart);
+      }
     }
 
-    // Observer'ları başlat
-    try {
-      lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
-      fidObserver.observe({ entryTypes: ['first-input'] });
-      clsObserver.observe({ entryTypes: ['layout-shift'] });
-      fcpObserver.observe({ entryTypes: ['first-contentful-paint'] });
-    } catch (error) {
-      console.warn('Performance Observer not supported:', error);
-    }
+    // Performance Observer'ları sadece destekleniyorsa başlat
+    const startObservers = () => {
+      try {
+        // LCP (Largest Contentful Paint)
+        if ('PerformanceObserver' in window) {
+          const lcpObserver = new PerformanceObserver((list) => {
+            const entries = list.getEntries();
+            if (entries.length > 0) {
+              const lastEntry = entries[entries.length - 1] as PerformanceEntry;
+              metricsRef.current.lcp = lastEntry.startTime;
+              if (isDevelopment) {
+                console.log('LCP:', lastEntry.startTime);
+              }
+            }
+          });
 
-    return () => {
-      lcpObserver.disconnect();
-      fidObserver.disconnect();
-      clsObserver.disconnect();
-      fcpObserver.disconnect();
+          lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
+
+          // FID (First Input Delay)
+          const fidObserver = new PerformanceObserver((list) => {
+            const entries = list.getEntries();
+            entries.forEach((entry: any) => {
+              if (entry.processingStart && entry.startTime) {
+                metricsRef.current.fid = entry.processingStart - entry.startTime;
+                if (isDevelopment) {
+                  console.log('FID:', metricsRef.current.fid);
+                }
+              }
+            });
+          });
+
+          fidObserver.observe({ entryTypes: ['first-input'] });
+
+          // CLS (Cumulative Layout Shift)
+          const clsObserver = new PerformanceObserver((list) => {
+            let clsValue = 0;
+            const entries = list.getEntries() as any[];
+            
+            entries.forEach((entry) => {
+              if (!entry.hadRecentInput) {
+                clsValue += entry.value;
+              }
+            });
+            
+            metricsRef.current.cls = clsValue;
+            if (isDevelopment) {
+              console.log('CLS:', clsValue);
+            }
+          });
+
+          clsObserver.observe({ entryTypes: ['layout-shift'] });
+
+          // FCP (First Contentful Paint) - Fallback ile
+          try {
+            const fcpObserver = new PerformanceObserver((list) => {
+              const entries = list.getEntries();
+              if (entries.length > 0) {
+                const firstEntry = entries[0];
+                metricsRef.current.fcp = firstEntry.startTime;
+                if (isDevelopment) {
+                  console.log('FCP:', firstEntry.startTime);
+                }
+              }
+            });
+
+            fcpObserver.observe({ entryTypes: ['first-contentful-paint'] });
+          } catch (fcpError) {
+            if (isDevelopment) {
+              console.log('FCP observer not supported, using paint timing API');
+            }
+            // Fallback: Paint timing API kullan
+            const paintEntries = performance.getEntriesByType('paint');
+            const fcpEntry = paintEntries.find(entry => entry.name === 'first-contentful-paint');
+            if (fcpEntry) {
+              metricsRef.current.fcp = fcpEntry.startTime;
+              if (isDevelopment) {
+                console.log('FCP (fallback):', fcpEntry.startTime);
+              }
+            }
+          }
+
+          return () => {
+            lcpObserver.disconnect();
+            fidObserver.disconnect();
+            clsObserver.disconnect();
+          };
+        }
+      } catch (error) {
+        if (isDevelopment) {
+          console.warn('Performance Observer not supported:', error);
+        }
+      }
     };
-  }, []);
+
+    // Sayfa yüklendikten sonra observer'ları başlat
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', startObservers);
+      return () => document.removeEventListener('DOMContentLoaded', startObservers);
+    } else {
+      return startObservers();
+    }
+  }, [isDevelopment]);
 
   const getMetrics = () => metricsRef.current;
 
