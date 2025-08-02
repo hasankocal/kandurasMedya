@@ -104,7 +104,11 @@ const AdminProjects: React.FC = () => {
 
   const handleEdit = (project: Project) => {
     setEditingProject(project);
-    setFormData(project);
+    setFormData({
+      ...project,
+      project_url: project.project_url || '',
+      github_url: project.github_url || ''
+    });
     setShowForm(true);
   };
 
@@ -397,7 +401,7 @@ const AdminProjects: React.FC = () => {
                     </label>
                     <input
                       type="url"
-                      value={formData.project_url}
+                      value={formData.project_url || ''}
                       onChange={(e) => handleChange('project_url', e.target.value)}
                       placeholder="https://example.com"
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
@@ -410,7 +414,7 @@ const AdminProjects: React.FC = () => {
                     </label>
                     <input
                       type="url"
-                      value={formData.github_url}
+                      value={formData.github_url || ''}
                       onChange={(e) => handleChange('github_url', e.target.value)}
                       placeholder="https://github.com/username/project"
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
