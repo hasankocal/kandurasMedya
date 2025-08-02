@@ -1,17 +1,37 @@
--- Projects tablosu için RLS politikası
--- Anonim kullanıcıların projects tablosunu okuyabilmesi için
+-- Projects tablosu için RLS politikalarını düzelt
 
--- Önce RLS'yi etkinleştir
+-- Önce mevcut politikaları temizle
+DROP POLICY IF EXISTS "Enable read access for all users" ON projects;
+DROP POLICY IF EXISTS "Enable insert for authenticated users only" ON projects;
+DROP POLICY IF EXISTS "Enable update for authenticated users only" ON projects;
+DROP POLICY IF EXISTS "Enable delete for authenticated users only" ON projects;
+
+-- RLS'yi devre dışı bırak ve tekrar etkinleştir
+ALTER TABLE projects DISABLE ROW LEVEL SECURITY;
 ALTER TABLE projects ENABLE ROW LEVEL SECURITY;
 
--- Anonim kullanıcılar için okuma politikası
-CREATE POLICY "Allow anonymous read access to projects" ON projects
+-- Yeni politikaları oluştur
+CREATE POLICY "Enable read access for all users" ON projects
 FOR SELECT USING (true);
 
--- Admin kullanıcılar için tam erişim politikası
-CREATE POLICY "Allow authenticated users full access to projects" ON projects
-FOR ALL USING (auth.role() = 'authenticated');
+CREATE POLICY "Enable insert for authenticated users only" ON projects
+FOR INSERT WITH CHECK (auth.role() = 'authenticated');
 
--- Servis rolü için tam erişim politikası
-CREATE POLICY "Allow service role full access to projects" ON projects
-FOR ALL USING (auth.role() = 'service_role'); 
+CREATE POLICY "Enable update for authenticated users only" ON projects
+FOR UPDATE USING (auth.role() = 'authenticated');
+
+CREATE POLICY "Enable delete for authenticated users only" ON projects
+FOR DELETE USING (auth.role() = 'authenticated');
+
+-- Alternatif olarak: RLS'yi tamamen devre dışı bırak (test için)
+-- ALTER TABLE projects DISABLE ROW LEVEL SECURITY;
+
+-- Mevcut projeleri kontrol et
+SELECT 
+  id,
+  title,
+  category,
+  client,
+  created_at
+FROM projects 
+ORDER BY created_at DESC; 

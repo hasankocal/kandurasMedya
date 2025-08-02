@@ -182,26 +182,11 @@ const Portfolio: React.FC = () => {
     ? projects 
     : projects.filter(project => project.category === filter);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p>Projeler yükleniyor...</p>
-        </div>
-      </div>
-    );
-  }
+
 
   return (
     <div>
-      {/* Veri kaynağı göstergesi */}
-      <div className="fixed top-20 right-4 z-50 p-3 bg-primary-100 rounded-lg text-sm shadow-lg">
-        <div className="font-semibold">Portfolio Veri Kaynağı:</div>
-        <div>Site Settings: {siteSettings ? '🟢 Supabase' : '🔴 Statik'}</div>
-        <div>Proje Sayısı: {projects.length}</div>
-        <div>Veri Kaynağı: {projects.length > 0 ? 'Projects Tablosu' : 'Site Settings'}</div>
-      </div>
+
       
       {/* Hero Section */}
       <section className="bg-primary-700 text-white py-24 relative">

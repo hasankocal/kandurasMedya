@@ -52,6 +52,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
     { name: 'İletişim Mesajları', href: '/admin/contacts', icon: Mail },
     { name: 'Blog Yazıları', href: '/admin/blog', icon: FileText },
     { name: 'Projeler', href: '/admin/projects', icon: FolderOpen },
+    { name: 'Hizmetler', href: '/admin/services', icon: Settings },
     { name: 'Kullanıcılar', href: '/admin/users', icon: Users },
     { name: 'Ayarlar', href: '/admin/settings', icon: Settings },
   ];

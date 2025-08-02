@@ -14,6 +14,7 @@ import AdminContacts from './pages/AdminContacts';
 import AdminLogin from './pages/AdminLogin';
 import AdminBlog from './pages/AdminBlog';
 import AdminProjects from './pages/AdminProjects';
+import AdminServices from './pages/AdminServices';
 import AdminSettings from './pages/AdminSettings';
 import ScrollToTopButton from './components/ui/ScrollToTopButton';
 import { AdminProvider } from './context/AdminContext';
@@ -60,6 +61,11 @@ function App() {
           <Route path="/admin/projects" element={
             <AdminProvider>
               <AdminProjects key="admin-projects" />
+            </AdminProvider>
+          } />
+          <Route path="/admin/services" element={
+            <AdminProvider>
+              <AdminServices key="admin-services" />
             </AdminProvider>
           } />
           <Route path="/admin/settings" element={

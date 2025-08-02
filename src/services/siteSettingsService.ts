@@ -68,6 +68,17 @@ export interface BlogCategory {
   updated_at: string;
 }
 
+export interface Service {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  sort_order: number;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface BlogPost {
   id: string;
   title: string;
@@ -294,24 +305,16 @@ export const subscribeToNewsletter = async (email: string): Promise<{ success: b
 
 export const updateSiteSettings = async (settings: Partial<SiteSettings>): Promise<boolean> => {
   try {
-    console.log('🔄 SiteSettingsService: Güncelleme başlatılıyor...');
-    console.log('📝 SiteSettingsService: Güncellenecek veriler:', settings);
-    
     const { data, error } = await supabase
       .from('site_settings')
       .update(settings)
       .eq('id', settings.id)
       .select();
 
-    console.log('📊 SiteSettingsService: Supabase update response:', { data, error });
-
     if (error) {
       console.error('❌ SiteSettingsService: Güncelleme hatası:', error);
       return false;
     }
-
-    console.log('✅ SiteSettingsService: Güncelleme başarılı!');
-    console.log('📊 Güncellenmiş veri:', data);
 
     // Cache'i temizle
     cachedSettings = null;
@@ -326,7 +329,6 @@ export const updateSiteSettings = async (settings: Partial<SiteSettings>): Promi
 
 // Varsayılan ayarlar
 const getDefaultSettings = (): SiteSettings => {
-  console.log('📋 SiteSettingsService: Varsayılan ayarlar döndürülüyor');
   return {
     hero_title: 'Kanduras Medya ile Dijital Potansiyelinizi Keşfedin',
     hero_subtitle: 'Yapay zeka destekli stratejilerle markanızı zirveye taşıyoruz.',
@@ -352,4 +354,69 @@ const getDefaultSettings = (): SiteSettings => {
 export const clearSettingsCache = () => {
   cachedSettings = null;
   cacheExpiry = 0;
+};
+
+// Services CRUD
+export const getServices = async (): Promise<Service[]> => {
+  try {
+    const { data, error } = await supabase
+      .from('services')
+      .select('*')
+      .eq('is_active', true)
+      .order('sort_order', { ascending: true });
+
+    if (error) throw error;
+    return data || [];
+  } catch (error) {
+    console.error('❌ SiteSettingsService: Hizmetler yüklenirken hata:', error);
+    return [];
+  }
+};
+
+export const createService = async (service: Omit<Service, 'id' | 'created_at' | 'updated_at'>): Promise<Service | null> => {
+  try {
+    const { data, error } = await supabase
+      .from('services')
+      .insert([service])
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.error('❌ SiteSettingsService: Hizmet oluşturulurken hata:', error);
+    return null;
+  }
+};
+
+export const updateService = async (id: string, service: Partial<Service>): Promise<Service | null> => {
+  try {
+    const { data, error } = await supabase
+      .from('services')
+      .update(service)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.error('❌ SiteSettingsService: Hizmet güncellenirken hata:', error);
+    return null;
+  }
+};
+
+export const deleteService = async (id: string): Promise<boolean> => {
+  try {
+    const { error } = await supabase
+      .from('services')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+    return true;
+  } catch (error) {
+    console.error('❌ SiteSettingsService: Hizmet silinirken hata:', error);
+    return false;
+  }
 }; 

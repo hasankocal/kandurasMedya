@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../components/ui/Button';
 import SectionHeading from '../components/ui/SectionHeading';
@@ -13,6 +13,7 @@ import {
   TrendingUp
 } from 'lucide-react';
 import { useSite } from '../context/SiteContext';
+import { getServices, Service } from '../services/siteSettingsService';
 
 interface ServiceDetailProps {
   title: string;
@@ -74,29 +75,52 @@ const ServiceDetail: React.FC<ServiceDetailProps> = ({ title, icon, description,
 
 const Services: React.FC = () => {
   const { siteSettings } = useSite();
-  
+  const [services, setServices] = useState<Service[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  
+  useEffect(() => {
+    const loadServices = async () => {
+      try {
+        const servicesData = await getServices();
+        setServices(servicesData);
+      } catch (error) {
+        console.error('Hizmetler yüklenirken hata:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadServices();
+  }, []);
+
   // Dinamik veriler
   const servicesTitle = siteSettings?.services_title || 'Hizmetlerimiz';
   const servicesSubtitle = siteSettings?.services_subtitle || 'İşletmenize değer katacak, pazarlama süreçlerinizi güçlendirecek çözümler sunuyoruz.';
-  const servicesList = siteSettings?.services_list || [];
   
-  // Dinamik services detayları
-  const dynamicServices = siteSettings?.services_details || [];
-  
-  const services = dynamicServices.length > 0 ? dynamicServices.map((service, index) => ({
+  // Icon mapping
+  const getIconComponent = (iconName: string) => {
+    const iconMap: { [key: string]: React.ReactNode } = {
+      'Megaphone': <Megaphone size={28} />,
+      'Search': <Search size={28} />,
+      'LineChart': <LineChart size={28} />,
+      'BarChart': <BarChart size={28} />,
+      'Globe': <Globe size={28} />,
+      'Mail': <Mail size={28} />,
+      'Smartphone': <Smartphone size={28} />,
+      'TrendingUp': <TrendingUp size={28} />
+    };
+    return iconMap[iconName] || <Megaphone size={28} />;
+  };
+
+  const servicesWithIcons = services.map(service => ({
     ...service,
-    icon: [
-      <Megaphone size={28} />,
-      <Search size={28} />,
-      <LineChart size={28} />,
-      <BarChart size={28} />,
-      <Globe size={28} />,
-      <Mail size={28} />,
-      <Smartphone size={28} />
-    ][index] || <Megaphone size={28} />
-  })) : [
+    icon: getIconComponent(service.icon)
+  }));
+
+  // Eğer services tablosundan veri gelmezse fallback kullan
+  const displayServices = servicesWithIcons.length > 0 ? servicesWithIcons : fallbackServices;
+
+  const fallbackServices = [
     {
       title: "Sosyal Medya Yönetimi",
       icon: <Megaphone size={28} />,
@@ -185,10 +209,7 @@ const Services: React.FC = () => {
 
   return (
     <div>
-      {/* Veri kaynağı göstergesi */}
-      <div className="fixed top-20 right-4 z-50 p-3 bg-primary-100 rounded-lg text-sm shadow-lg">
-        <span className="font-semibold">Services Veri Kaynağı:</span> {siteSettings ? '🟢 Supabase' : '🔴 Statik'}
-      </div>
+
       
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-primary-700 via-primary-600 to-primary-800 text-white py-32 relative overflow-hidden">
@@ -241,13 +262,13 @@ const Services: React.FC = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-6 lg:gap-8">
-            {services.map((service, index) => (
+            {displayServices.map((service, index) => (
               <ServiceDetail
-                key={index}
+                key={service.id || index}
                 title={service.title}
                 icon={service.icon}
                 description={service.description}
-                features={service.features}
+                features={service.features || []}
               />
             ))}
           </div>

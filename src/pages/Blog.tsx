@@ -216,13 +216,7 @@ const Blog: React.FC = () => {
 
   return (
     <div>
-      {/* Veri kaynağı göstergesi */}
-      <div className="fixed top-20 right-4 z-50 p-3 bg-primary-100 rounded-lg text-sm shadow-lg">
-        <div className="font-semibold">Blog Veri Kaynağı:</div>
-        <div>Blog Posts: {blogPosts.length > 0 ? '🟢 Blog Posts Tablosu' : '🔴 Statik'}</div>
-        <div>Site Settings: {siteSettings ? '🟢 Supabase' : '🔴 Statik'}</div>
-        {loading && <div className="text-blue-600">⏳ Yükleniyor...</div>}
-      </div>
+
       
       {/* Hero Section */}
       <section className="bg-primary-700 text-white py-24 relative">
@@ -273,12 +267,7 @@ const Blog: React.FC = () => {
             </div>
           </div>
 
-          {loading ? (
-            <div className="text-center py-12">
-              <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mb-4"></div>
-              <p className="text-dark-300">Blog yazıları yükleniyor...</p>
-            </div>
-          ) : filteredPosts.length > 0 ? (
+          {filteredPosts.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredPosts.map((post) => (
                 <BlogCard key={post.id} post={post} />

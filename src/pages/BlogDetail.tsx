@@ -31,16 +31,7 @@ const BlogDetail: React.FC = () => {
     }
   }, [id]);
 
-  if (loading) {
-    return (
-      <div className="container mx-auto px-4 py-20">
-        <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mb-4"></div>
-          <p className="text-dark-300">Blog yazısı yükleniyor...</p>
-        </div>
-      </div>
-    );
-  }
+
 
   if (!post) {
     return (
