@@ -51,8 +51,8 @@ const AdminLogin: React.FC = () => {
   // Basit hash fonksiyonu (production'da bcrypt kullanın)
   const hashPassword = async (password: string): Promise<string> => {
     // Veritabanındaki hash ile uyumlu olması için sabit hash kullan
-    if (password === 'admin123') {
-      return 'ac0e7d037817094e9e0b4441f9bae3209d67b02fa484917065f71b16109a1a78';
+    if (password === 'Kanduras2024Secure') {
+      return '7a1fef8eaff4dd6355167603daf6598e7d3223779d97d42860b76229fd28bdd5';
     }
     
     const encoder = new TextEncoder();
@@ -140,10 +140,10 @@ const AdminLogin: React.FC = () => {
 
           {/* Demo Credentials */}
           <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-            <h3 className="text-sm font-medium text-gray-700 mb-2">Demo Giriş Bilgileri:</h3>
+            <h3 className="text-sm font-medium text-gray-700 mb-2">Admin Giriş Bilgileri:</h3>
             <div className="text-sm text-gray-600 space-y-1">
               <p><strong>E-posta:</strong> admin@kandurasmedya.com</p>
-              <p><strong>Şifre:</strong> admin123456</p>
+              <p><strong>Şifre:</strong> Kanduras2024Secure</p>
             </div>
           </div>
         </div>
