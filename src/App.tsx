@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import Layout from './components/layout/Layout';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -32,15 +33,16 @@ function ScrollToTop() {
 
 function App() {
   return (
-    <Router
-      future={{
-        v7_startTransition: true,
-        v7_relativeSplatPath: true
-      }}
-    >
-      <SiteProvider>
-        <ScrollToTop />
-        <Routes>
+    <HelmetProvider>
+      <Router
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true
+        }}
+      >
+        <SiteProvider>
+          <ScrollToTop />
+          <Routes>
           {/* Admin routes - Layout olmadan */}
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin" element={
@@ -126,6 +128,7 @@ function App() {
         </Routes>
       </SiteProvider>
     </Router>
+    </HelmetProvider>
   );
 }
 

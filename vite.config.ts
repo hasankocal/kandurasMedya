@@ -6,16 +6,25 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 3000,
-    proxy: {
-      '/api': {
-        target: 'https://kandurasmedya.com',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
-      }
+    host: true,
+    headers: {
+      'X-Content-Type-Options': 'nosniff',
+      'X-Frame-Options': 'DENY',
+      'X-XSS-Protection': '1; mode=block',
+      'Referrer-Policy': 'strict-origin-when-cross-origin',
+      'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
     }
   },
   build: {
-    outDir: 'dist',
-    sourcemap: true
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          router: ['react-router-dom'],
+          supabase: ['@supabase/supabase-js'],
+          ui: ['lucide-react', 'framer-motion']
+        }
+      }
+    }
   }
 })

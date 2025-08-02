@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://kandurasmedya.com/sitemap.xml
+
+# Admin panelini engelle
+Disallow: /admin/
+
+# Geçici dosyaları engelle
+Disallow: /temp/
+Disallow: /tmp/
+
+# Crawl-delay
+Crawl-delay: 1 

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { Eye, EyeOff, Lock, Mail } from 'lucide-react';
+import { Eye, EyeOff, Lock, Mail, AlertCircle } from 'lucide-react';
 
 const AdminLogin: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -9,18 +9,61 @@ const AdminLogin: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [loginAttempts, setLoginAttempts] = useState(0);
+  const [isLocked, setIsLocked] = useState(false);
+  const [lockoutTime, setLockoutTime] = useState(0);
   const navigate = useNavigate();
+
+  // Rate limiting kontrolü
+  useEffect(() => {
+    const savedAttempts = localStorage.getItem('loginAttempts');
+    const savedLockoutTime = localStorage.getItem('lockoutTime');
+    
+    if (savedAttempts) {
+      setLoginAttempts(parseInt(savedAttempts));
+    }
+    
+    if (savedLockoutTime) {
+      const lockoutEnd = parseInt(savedLockoutTime);
+      const now = Date.now();
+      
+      if (now < lockoutEnd) {
+        setIsLocked(true);
+        setLockoutTime(lockoutEnd);
+        
+        const timer = setInterval(() => {
+          const currentTime = Date.now();
+          if (currentTime >= lockoutEnd) {
+            setIsLocked(false);
+            setLockoutTime(0);
+            localStorage.removeItem('lockoutTime');
+            clearInterval(timer);
+          }
+        }, 1000);
+        
+        return () => clearInterval(timer);
+      } else {
+        localStorage.removeItem('lockoutTime');
+        localStorage.removeItem('loginAttempts');
+        setLoginAttempts(0);
+      }
+    }
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (isLocked) {
+      setError('Çok fazla başarısız deneme. Lütfen bekleyin.');
+      return;
+    }
+    
     setLoading(true);
     setError('');
 
     try {
       // Basit hash kontrolü (production'da daha güvenli yöntem kullanın)
       const hashedPassword = await hashPassword(password);
-      
-      
       
       const { data, error } = await supabase
         .from('users')
@@ -29,12 +72,29 @@ const AdminLogin: React.FC = () => {
         .eq('password_hash', hashedPassword)
         .single();
 
-  
-
       if (error || !data) {
-        setError('E-posta veya şifre hatalı');
+        const newAttempts = loginAttempts + 1;
+        setLoginAttempts(newAttempts);
+        localStorage.setItem('loginAttempts', newAttempts.toString());
+        
+        // 5 başarısız denemeden sonra 15 dakika kilitle
+        if (newAttempts >= 5) {
+          const lockoutEnd = Date.now() + (15 * 60 * 1000); // 15 dakika
+          setIsLocked(true);
+          setLockoutTime(lockoutEnd);
+          localStorage.setItem('lockoutTime', lockoutEnd.toString());
+          setError('Çok fazla başarısız deneme. Hesabınız 15 dakika kilitlendi.');
+        } else {
+          setError(`E-posta veya şifre hatalı. Kalan deneme: ${5 - newAttempts}`);
+        }
         return;
       }
+
+      // Başarılı giriş - sayaçları sıfırla
+      localStorage.removeItem('loginAttempts');
+      localStorage.removeItem('lockoutTime');
+      setLoginAttempts(0);
+      setIsLocked(false);
 
       // Giriş başarılı - localStorage'a admin bilgilerini kaydet
       localStorage.setItem('adminUser', JSON.stringify(data));
@@ -62,6 +122,12 @@ const AdminLogin: React.FC = () => {
     return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
   };
 
+  const formatTime = (time: number) => {
+    const minutes = Math.floor((time - Date.now()) / 60000);
+    const seconds = Math.floor(((time - Date.now()) % 60000) / 1000);
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-900 to-primary-700 flex items-center justify-center p-4">
       <div className="max-w-md w-full">
@@ -73,6 +139,21 @@ const AdminLogin: React.FC = () => {
             </h1>
             <p className="text-gray-600">Admin Panel Girişi</p>
           </div>
+
+          {/* Security Warning */}
+          {isLocked && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <div className="flex items-center">
+                <AlertCircle className="w-5 h-5 text-red-500 mr-2" />
+                <div>
+                  <p className="text-red-700 font-medium">Hesap Kilitli</p>
+                  <p className="text-red-600 text-sm">
+                    Kalan süre: {formatTime(lockoutTime)}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Login Form */}
           <form onSubmit={handleLogin} className="space-y-6">
@@ -89,7 +170,8 @@ const AdminLogin: React.FC = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  disabled={isLocked}
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
                   placeholder="admin@kandurasmedya.com"
                 />
               </div>
@@ -108,13 +190,15 @@ const AdminLogin: React.FC = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  disabled={isLocked}
+                  className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
                   placeholder="••••••••"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  disabled={isLocked}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 disabled:cursor-not-allowed"
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
@@ -131,14 +215,14 @@ const AdminLogin: React.FC = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || isLocked}
               className="w-full bg-primary-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-primary-700 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              {loading ? 'Giriş yapılıyor...' : 'Giriş Yap'}
+              {loading ? 'Giriş yapılıyor...' : isLocked ? 'Hesap Kilitli' : 'Giriş Yap'}
             </button>
           </form>
 
-          {/* Demo Credentials */}
+          {/* Admin Credentials */}
           <div className="mt-6 p-4 bg-gray-50 rounded-lg">
             <h3 className="text-sm font-medium text-gray-700 mb-2">Admin Giriş Bilgileri:</h3>
             <div className="text-sm text-gray-600 space-y-1">

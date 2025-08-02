@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import MetaTags from '../components/seo/MetaTags';
 import Button from '../components/ui/Button';
 import SectionHeading from '../components/ui/SectionHeading';
 import { 
@@ -226,9 +227,17 @@ const Services: React.FC = () => {
   const displayServices = servicesWithIcons.length > 0 ? servicesWithIcons : fallbackServices;
 
   return (
-    <div>
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary-700 via-primary-600 to-primary-800 text-white py-32 relative overflow-hidden">
+    <>
+      <MetaTags 
+        title="Dijital Pazarlama Hizmetleri - Web Tasarım, SEO, Sosyal Medya"
+        description="Profesyonel dijital pazarlama hizmetleri: Web tasarım, SEO optimizasyonu, sosyal medya yönetimi, Google Ads, yapay zeka destekli çözümler. İstanbul'da dijital başarı için Kanduras Medya."
+        keywords="dijital pazarlama hizmetleri, web tasarım İstanbul, SEO hizmetleri, sosyal medya yönetimi, Google Ads, yapay zeka dijital pazarlama, İstanbul dijital ajans"
+        url="/services"
+        type="website"
+      />
+      <div>
+        {/* Hero Section */}
+        <section className="bg-gradient-to-br from-primary-700 via-primary-600 to-primary-800 text-white py-32 relative overflow-hidden">
         <div className="absolute inset-0 bg-dark-500 opacity-40"></div>
         <div className="absolute top-0 left-0 w-full h-full">
           <div className="absolute top-20 left-10 w-20 h-20 bg-white opacity-10 rounded-full"></div>
@@ -328,7 +337,8 @@ const Services: React.FC = () => {
           </div>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   );
 };
 
