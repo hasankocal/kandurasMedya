@@ -11,6 +11,7 @@ interface Service {
   description: string;
   icon: string;
   image_url?: string;
+  features?: string[];
   sort_order: number;
   is_active: boolean;
   created_at?: string;
@@ -40,6 +41,7 @@ const AdminServices: React.FC = () => {
     description: '',
     icon: 'Megaphone',
     image_url: '',
+    features: [],
     sort_order: 0,
     is_active: true
   });
@@ -165,7 +167,10 @@ const AdminServices: React.FC = () => {
 
   const handleEdit = (service: Service) => {
     setEditingService(service);
-    setFormData(service);
+    setFormData({
+      ...service,
+      features: service.features || []
+    });
     setShowForm(true);
   };
 
@@ -209,7 +214,7 @@ const AdminServices: React.FC = () => {
     setShowForm(false);
   };
 
-  const handleChange = (field: keyof Service, value: string | boolean | number) => {
+  const handleChange = (field: keyof Service, value: string | boolean | number | string[]) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
@@ -469,6 +474,20 @@ const AdminServices: React.FC = () => {
                     rows={4}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Özellikler (Her satıra bir özellik)
+                  </label>
+                  <textarea
+                    value={formData.features?.join('\n') || ''}
+                    onChange={(e) => handleChange('features', e.target.value.split('\n').filter(f => f.trim()))}
+                    rows={5}
+                    placeholder="YZ Destekli İçerik Üretimi&#10;Otomatik Topluluk Yönetimi&#10;Hedefli Sosyal Medya Reklamları&#10;Performans Analizi ve Raporlama&#10;Rakip Analizi ve Trend Takibi"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">Her satıra bir özellik yazın. Boş satırlar otomatik olarak kaldırılır.</p>
                 </div>
                 
                 <div className="flex items-center">

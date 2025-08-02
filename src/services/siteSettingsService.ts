@@ -74,6 +74,7 @@ export interface Service {
   description: string;
   icon: string;
   image_url?: string;
+  features?: string[];
   sort_order: number;
   is_active: boolean;
   created_at: string;

@@ -48,44 +48,45 @@ const ServiceDetail: React.FC<ServiceDetailProps> = ({ title, icon, description,
           </div>
           <h3 className="text-lg md:text-base lg:text-lg font-bold text-dark-900">{title}</h3>
         </div>
-      
-      <p className="text-dark-600 mb-4 md:mb-3 lg:mb-4 text-sm md:text-xs lg:text-sm leading-relaxed">{description}</p>
-      
-      <div className="bg-gradient-to-r from-primary-50 to-accent-50 p-3 md:p-2 lg:p-3 rounded-md mb-4 md:mb-3 lg:mb-4">
-        <h4 className="font-bold text-dark-900 mb-2 md:mb-1.5 lg:mb-2 text-sm md:text-xs lg:text-sm">🚀 Neler Sunuyoruz:</h4>
         
-        <ul className="space-y-1.5 md:space-y-1 lg:space-y-1.5">
-          {features.map((feature, index) => (
-            <li key={index} className="flex items-start">
-              <div className="flex-shrink-0 w-4 h-4 md:w-3.5 md:h-3.5 lg:w-4 lg:h-4 bg-primary-600 text-white rounded-full flex items-center justify-center mr-2 mt-0.5">
-                <svg 
-                  className="w-2.5 h-2.5 md:w-2 md:h-2 lg:w-2.5 lg:h-2.5" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24"
-                >
-                  <path 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    strokeWidth="2" 
-                    d="M5 13l4 4L19 7" 
-                  />
-                </svg>
-              </div>
-              <span className="text-dark-700 text-xs md:text-xs lg:text-xs font-medium">{feature}</span>
-            </li>
-          ))}
-        </ul>
+        <p className="text-dark-600 mb-4 md:mb-3 lg:mb-4 text-sm md:text-xs lg:text-sm leading-relaxed">{description}</p>
+        
+        <div className="bg-gradient-to-r from-primary-50 to-accent-50 p-3 md:p-2 lg:p-3 rounded-md mb-4 md:mb-3 lg:mb-4">
+          <h4 className="font-bold text-dark-900 mb-2 md:mb-1.5 lg:mb-2 text-sm md:text-xs lg:text-sm">🚀 Neler Sunuyoruz:</h4>
+          
+          <ul className="space-y-1.5 md:space-y-1 lg:space-y-1.5">
+            {features.map((feature, index) => (
+              <li key={index} className="flex items-start">
+                <div className="flex-shrink-0 w-4 h-4 md:w-3.5 md:h-3.5 lg:w-4 lg:h-4 bg-primary-600 text-white rounded-full flex items-center justify-center mr-2 mt-0.5">
+                  <svg 
+                    className="w-2.5 h-2.5 md:w-2 md:h-2 lg:w-2.5 lg:h-2.5" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round" 
+                      strokeWidth="2" 
+                      d="M5 13l4 4L19 7" 
+                    />
+                  </svg>
+                </div>
+                <span className="text-dark-700 text-xs md:text-xs lg:text-xs font-medium">{feature}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        
+        <Link to="/contact">
+          <Button 
+            variant="primary" 
+            className="w-full py-2.5 md:py-2 lg:py-2.5 text-sm md:text-xs lg:text-sm font-semibold shadow-sm hover:shadow-md transition-all duration-300"
+          >
+            Bu Hizmet Hakkında Bilgi Alın
+          </Button>
+        </Link>
       </div>
-      
-      <Link to="/contact">
-        <Button 
-          variant="primary" 
-          className="w-full py-2.5 md:py-2 lg:py-2.5 text-sm md:text-xs lg:text-sm font-semibold shadow-sm hover:shadow-md transition-all duration-300"
-        >
-          Bu Hizmet Hakkında Bilgi Alın
-        </Button>
-      </Link>
     </div>
   );
 };
@@ -128,14 +129,6 @@ const Services: React.FC = () => {
     };
     return iconMap[iconName] || <Megaphone size={28} />;
   };
-
-  const servicesWithIcons = services.map(service => ({
-    ...service,
-    icon: getIconComponent(service.icon)
-  }));
-
-  // Eğer services tablosundan veri gelmezse fallback kullan
-  const displayServices = servicesWithIcons.length > 0 ? servicesWithIcons : fallbackServices;
 
   const fallbackServices = [
     {
@@ -224,10 +217,16 @@ const Services: React.FC = () => {
     }
   ];
 
+  const servicesWithIcons = services.map(service => ({
+    ...service,
+    icon: getIconComponent(service.icon)
+  }));
+
+  // Eğer services tablosundan veri gelmezse fallback kullan
+  const displayServices = servicesWithIcons.length > 0 ? servicesWithIcons : fallbackServices;
+
   return (
     <div>
-
-      
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-primary-700 via-primary-600 to-primary-800 text-white py-32 relative overflow-hidden">
         <div className="absolute inset-0 bg-dark-500 opacity-40"></div>
