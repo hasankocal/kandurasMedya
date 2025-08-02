@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import MetaTags from '../components/seo/MetaTags';
 import Button from '../components/ui/Button';
 import SectionHeading from '../components/ui/SectionHeading';
+import OptimizedImage from '../components/ui/OptimizedImage';
 import { 
   Megaphone, 
   Search, 
@@ -30,13 +31,13 @@ const ServiceDetail: React.FC<ServiceDetailProps> = ({ title, icon, description,
       {/* Görsel */}
       {image_url && (
         <div className="relative h-48 overflow-hidden">
-          <img 
+          <OptimizedImage 
             src={image_url} 
             alt={title}
             className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-            onError={(e) => {
-              e.currentTarget.style.display = 'none';
-            }}
+            width={400}
+            height={192}
+            priority={false}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
         </div>

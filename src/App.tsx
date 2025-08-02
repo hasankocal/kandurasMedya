@@ -18,6 +18,7 @@ import AdminProjects from './pages/AdminProjects';
 import AdminServices from './pages/AdminServices';
 import AdminSettings from './pages/AdminSettings';
 import ScrollToTopButton from './components/ui/ScrollToTopButton';
+import PerformanceMonitor from './components/ui/PerformanceMonitor';
 import { AdminProvider } from './context/AdminContext';
 import { SiteProvider } from './context/SiteContext';
 
@@ -126,6 +127,7 @@ function App() {
             </Layout>
           } />
         </Routes>
+        <PerformanceMonitor />
       </SiteProvider>
     </Router>
     </HelmetProvider>
