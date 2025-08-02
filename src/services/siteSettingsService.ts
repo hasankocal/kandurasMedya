@@ -73,6 +73,7 @@ export interface Service {
   title: string;
   description: string;
   icon: string;
+  image_url?: string;
   sort_order: number;
   is_active: boolean;
   created_at: string;

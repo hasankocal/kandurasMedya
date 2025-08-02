@@ -19,18 +19,35 @@ interface ServiceDetailProps {
   title: string;
   icon: React.ReactNode;
   description: string;
+  image_url?: string;
   features: string[];
 }
 
-const ServiceDetail: React.FC<ServiceDetailProps> = ({ title, icon, description, features }) => {
+const ServiceDetail: React.FC<ServiceDetailProps> = ({ title, icon, description, image_url, features }) => {
   return (
-    <div className="bg-white p-4 md:p-3 lg:p-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
-      <div className="flex items-center mb-4 md:mb-3 lg:mb-4">
-        <div className="inline-flex items-center justify-center w-10 h-10 md:w-9 md:h-9 lg:w-10 lg:h-10 bg-gradient-to-br from-primary-500 to-primary-600 text-white rounded-lg shadow-sm mr-3 md:mr-2 lg:mr-3">
-          {icon}
+    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 overflow-hidden">
+      {/* Görsel */}
+      {image_url && (
+        <div className="relative h-48 overflow-hidden">
+          <img 
+            src={image_url} 
+            alt={title}
+            className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+            onError={(e) => {
+              e.currentTarget.style.display = 'none';
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
         </div>
-        <h3 className="text-lg md:text-base lg:text-lg font-bold text-dark-900">{title}</h3>
-      </div>
+      )}
+      
+      <div className="p-4 md:p-3 lg:p-4">
+        <div className="flex items-center mb-4 md:mb-3 lg:mb-4">
+          <div className="inline-flex items-center justify-center w-10 h-10 md:w-9 md:h-9 lg:w-10 lg:h-10 bg-gradient-to-br from-primary-500 to-primary-600 text-white rounded-lg shadow-sm mr-3 md:mr-2 lg:mr-3">
+            {icon}
+          </div>
+          <h3 className="text-lg md:text-base lg:text-lg font-bold text-dark-900">{title}</h3>
+        </div>
       
       <p className="text-dark-600 mb-4 md:mb-3 lg:mb-4 text-sm md:text-xs lg:text-sm leading-relaxed">{description}</p>
       
@@ -268,6 +285,7 @@ const Services: React.FC = () => {
                 title={service.title}
                 icon={service.icon}
                 description={service.description}
+                image_url={service.image_url}
                 features={service.features || []}
               />
             ))}

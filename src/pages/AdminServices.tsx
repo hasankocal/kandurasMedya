@@ -10,6 +10,7 @@ interface Service {
   title: string;
   description: string;
   icon: string;
+  image_url?: string;
   sort_order: number;
   is_active: boolean;
   created_at?: string;
@@ -38,6 +39,7 @@ const AdminServices: React.FC = () => {
     title: '',
     description: '',
     icon: 'Megaphone',
+    image_url: '',
     sort_order: 0,
     is_active: true
   });
@@ -199,6 +201,7 @@ const AdminServices: React.FC = () => {
       title: '',
       description: '',
       icon: 'Megaphone',
+      image_url: '',
       sort_order: 0,
       is_active: true
     });
@@ -278,6 +281,9 @@ const AdminServices: React.FC = () => {
                     Hizmet
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Görsel
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     İkon
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -303,6 +309,22 @@ const AdminServices: React.FC = () => {
                           {service.description.substring(0, 60)}...
                         </div>
                       </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {service.image_url ? (
+                        <img 
+                          src={service.image_url} 
+                          alt={service.title}
+                          className="w-12 h-12 object-cover rounded-lg"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                          }}
+                        />
+                      ) : (
+                        <div className="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center">
+                          <span className="text-xs text-gray-500">Görsel Yok</span>
+                        </div>
+                      )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
@@ -395,6 +417,31 @@ const AdminServices: React.FC = () => {
                         </option>
                       ))}
                     </select>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Görsel URL
+                    </label>
+                    <input
+                      type="url"
+                      value={formData.image_url || ''}
+                      onChange={(e) => handleChange('image_url', e.target.value)}
+                      placeholder="https://example.com/image.jpg"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    />
+                    {formData.image_url && (
+                      <div className="mt-2">
+                        <img 
+                          src={formData.image_url} 
+                          alt="Önizleme"
+                          className="w-20 h-20 object-cover rounded-lg border"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                          }}
+                        />
+                      </div>
+                    )}
                   </div>
                   
                   <div>
